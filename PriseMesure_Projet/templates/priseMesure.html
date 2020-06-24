@@ -1,0 +1,429 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/form.css' %}" />
+</head>
+<body onLoad="openCity(event, 'Marches')">
+    <header>
+        <h1 style="display: inline;">Prise de mesure</h1> <a href="/" style="display: inline;"><span>Back</span>></a>
+    </header>
+    <!-- Tab links -->
+    <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'Marches')">Marches</button>
+        <button class="tablinks" onclick="openCity(event, 'Eclairage')">Eclairage</button>
+        <button class="tablinks" onclick="openCity(event, 'Accessoire')">Accessoire</button>
+        <button class="tablinks" onclick="openCity(event, 'Mesures')">Mesures</button>
+    </div>
+    
+    <form action="/NouveauDevis/" method="post"> {% csrf_token %}
+        <!-- Onglet 1 -->
+        <div id="Marches" class="tabcontent">
+            <!-- Données Clientes -->
+            <fieldset>
+                <legend>Informations client</legend>
+                <div>
+                    <input type="text" name="name" id="name" class="" placeholder="Nom">
+                    <input type="text" name="firstname" id="firstname" class="" placeholder="Prénom">
+                </div>
+                <div>
+                    <input type="text" name="street_number" id="street_number" class="" placeholder="n°">
+                    <input type="text" name="street" id="street" class="" placeholder="Rue">
+                </div>
+                <div>
+                    <input type="text" name="city" id="city" class="" placeholder="Ville">
+                    <input type="text" name="postal_code" id="postal_code" class="" placeholder="Code postal">
+                </div>
+                <div>
+                    <input type="tel" name="phone" id="phone" class="" placeholder="Fixe">
+                    <input type="tel" name="smartphone" id="smartphone" class="" placeholder="Portable">
+                </div>
+                <div>
+                    <input type="email" name="email" id="email" class="" placeholder="Adresse mail">
+                </div>
+                <!-- <div>
+                    <input type="image" name="stamp" id="stamp" class="" placeholder="">
+                </div> -->
+            </fieldset>
+
+            <!-- Données marches -->
+            <fieldset>
+                <legend>Marches</legend>
+                <div>
+                    <input type="text" name="nombreMarche" id="nombreMarche" class="" placeholder="Nobre">
+                    <select name="decorMarche" id="decorMarche">
+                        <option selected disabled>Décors</option>
+                        {% for Décors in DecorsMarche %}
+                        <option value="{{ Décors.name }}">{{ Décors.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
+
+            <!-- Données contremarches -->
+            <fieldset>
+                <legend>Contremarches</legend>
+                <div>
+                    <input type="text" name="nombreContremarche" id="nombreContremarche" class="" placeholder="Nombre">
+                    <select name="decorContremarche" id="decorContremarche">
+                        <option selected disabled>Décors</option>
+                        {% for Decors in DecorsContremarche %}
+                        <option value="{{ Decors.name }}">{{ Decors.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
+
+            <!-- Données profilés -->
+            <fieldset>
+                <legend>Profilé Aluminium</legend>
+                <div>
+                    <input type="text" name="nombreProfile" id="nombreProfile" class="" placeholder="Nombre">
+                    <select name="typeProfile" id="typeProfile">
+                        <option selected disabled>Type</option>
+                        {% for Type in TypesProfile %}
+                        <option value="{{ Type.name }}">{{ Type.name }}</option>
+                        {% endfor %}
+                      </select>
+                </div>
+            </fieldset>
+
+            <!-- Données plinthes -->
+            <fieldset>
+                <legend>Plinthes</legend>
+                <div>
+                    <input type="text" name="nombrePlinthe" id="nombrePlinthe" class="" placeholder="Nombre">
+                    <select name="taillePlinthe" id="taillePlinthe">
+                        <option selected disabled>Tailles</option>
+                        {% for Taille in TaillesPlinthe %}
+                        <option value="{{ Taille.name }}">{{ Taille.name }}</option>
+                        {% endfor %}
+                      </select>
+                </div>
+            </fieldset>
+
+            <!-- Données barres de seuil -->
+            <fieldset>
+                <legend>Barre de seuil</legend>
+                <div>
+                    <input type="text" name="nombreBarreSeuil" id="nombreBarreSeuil" class="" placeholder="Nombre">
+                    <select name="typeBarreSeuil" id="typeBarreSeuil">
+                        <option selected disabled>Type</option>
+                        {% for Type in TypesBarSeuil %}
+                        <option value="{{ Type.name }}">{{ Type.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="couleurBarreSeuil" id="couleurBarreSeuil">
+                        <option selected disabled>Couleur</option>
+                        {% for Décors in DecorsMarche %}
+                        <option value="{{ Décors.name }}">{{ Décors.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
+
+            <!-- Données marches palieres -->
+            <fieldset>
+                <legend>Marche palière</legend>
+                <div>
+                    <input type="text" name="nombreMarchePaliere" id="nombreMarchePaliere" class="" placeholder="Nombre">
+                    <select name="typeMarchePaliere" id="typeMarchePaliere">
+                        <option selected disabled>Type</option>
+                        {% for Type in TypesMarchePaliere %}
+                        <option value="{{ Type.name }}">{{ Type.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="tailleMarchePaliere" id="tailleMarchePaliere">
+                        <option selected disabled>Tailles</option>
+                        {% for Taille in TaillesMarchePaliere %}
+                        <option value="{{ Taille.name }}">{{ Taille.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
+
+        </div>
+
+        <!-- Onglet 2 -->
+        <div id="Eclairage" class="tabcontent">
+            <!-- Données Marches Eclairees -->
+            <fieldset>
+                <legend>Marches éclairées</legend>
+                <input type="number" name="nombreMarcheEclairee" id="nombreMarcheEclairee" class="" placeholder="Nombre">
+            </fieldset>
+            
+            <!-- Données Marches Non Eclairees -->
+            <fieldset>
+                <legend>Marches non Eclairées</legend>
+                <input type="number" name="nombreMarcheNonEclairee" id="nombreMarcheNonEclairee" class="" placeholder="Nombre">
+            </fieldset>
+            
+            <!-- Données Matériels Electriques -->
+            <fieldset>
+                <legend>Matériel Electrique</legend>
+                <div>
+                    <input type="number" name="nombreInterrupteur" id="nombreInterrupteur" class="" placeholder="Interrupteurs">
+                    <input type="number" name="nombreDetecteur" id="nombreDetecteur" class="" placeholder="Detecteurs">
+                </div>
+
+                <div>
+                    <input type="number" name="nombreUniteCommande" id="nombreUniteCommande" class="" placeholder="Unité de commande">
+                </div>
+
+                <div>
+                    <input type="number" name="nombreTransfo35W" id="nombreTransfo35W" class="" placeholder="Transfo 35W">
+                    <input type="number" name="nombreTransfo75W" id="nombreTransfo75W" class="" placeholder="Transfo 75W">
+                </div>
+
+                <div>
+                    <input type="number" name="nombreTransfo100W" id="nombreTransfo100W" class="" placeholder="Transfo 100W">
+                </div>
+
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" name="HauteurLimonVerifier" id="HauteurLimonVerifier" class="" placeholder="">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </fieldset>
+            
+        </div>
+
+        <!-- Onglet 3 -->
+        <div id="Accessoire" class="tabcontent">
+            <!-- Données marches rondes -->
+            <fieldset>
+                <legend>Marches rondes</legend>
+                <input type="text" name="nombreMarcheRonde" id="nombreMarcheRonde" class="" placeholder="Quantité">
+                <input type="text" name="tailleMarcheRonde" id="tailleMarcheRonde" class="" placeholder="Taille">
+                <button>Add</button>
+            </fieldset>
+            
+            <!-- Données limon intérieur -->
+            <fieldset>
+                <legend>Limon intérieur (défaut gauche)</legend>
+                <input type="text" name="longueurLimonInterieur" id="longueurLimonInterieur" class="" placeholder="Longueur">
+                <input type="text" name="PdlLimonInterieur" id="PdlLimonInterieur" class="" placeholder="PDL / PU">
+                <label for="coteGaucheLimonInterieur">Gauche</label>
+                <input type="radio" name="coteLimonInterieur" id="coteGaucheLimonInterieur" class="" value="Gauche">
+                <label for="coteDroitLimonInterieur">Droit</label>
+                <input type="radio" name="coteLimonInterieur" id="coteDroitLimonInterieur" class="" value="Droite">
+                <button>Add</button>
+            </fieldset>
+            
+            <!-- Données limon extérieur -->
+            <fieldset>
+                <legend>Limon extérieur</legend>
+                <input type="text" name="nombreLimonExterieur" id="nombreLimonExterieur" class="" placeholder="Quantité">
+                <input type="text" name="PdlLimonExterieur" id="PdlLimonExterieur" class="" placeholder="PDL / PU">
+                <button>Add</button>
+            </fieldset>
+            
+            <!-- Données habillage dessus -->
+            <fieldset>
+                <legend>Habillage dessus</legend>
+                <input type="text" name="nombreHabillageDessus" id="nombreHabillageDessus" class="" placeholder="Quantité">
+                <input type="text" name="PdlHabillageDessus" id="PdlHabillageDessus" class="" placeholder="PDL / PU">
+                <button>Add</button>
+            </fieldset>
+            
+            
+            <!-- Données decoupe nez de marche -->
+            <fieldset>
+                <legend>Découpe nez de marche</legend>
+                <input type="text" name="nombreDecoupeNezMarche" id="nombreDecoupeNezMarche" class="" placeholder="Quantité">
+                <input type="text" name="PdlDecoupeNezMarche" id="PdlDecoupeNezMarche" class="" placeholder="PDL / PU">
+                <button>Add</button>
+            </fieldset>
+            
+            <!-- Données pose parquet -->
+            <fieldset>
+                <legend>Pose parquet</legend>
+                <input type="text" name="nombrePoseParquet" id="nombrePoseParquet" class="" placeholder="Quantité">
+                <input type="text" name="PdlposeParquet" id="PdlposeParquet" class="" placeholder="PDL / PU">
+                <button>Add</button>
+            </fieldset>
+            
+            <!-- Données balustrade -->
+            <fieldset>
+                <legend>Balustrade</legend>
+                <input type="text" name="nombreBalustrade" id="nombreBalustrade" class="" placeholder="Quantité">
+                <input type="text" name="PdlBalustrade" id="PdlBalustrade" class="" placeholder="PDL / PU">
+                <button>Add</button>
+            </fieldset>
+            
+            <!-- Données creation de contremarche -->
+            <fieldset>
+                <legend>Création de contremarche</legend>
+                <input type="text" name="nombreCreationContremarche" id="nombreCreationContremarche" class="" placeholder="Quantité">
+                <input type="text" name="PdlCreationContremarche" id="PdlCreationContremarche" class="" placeholder="PDL / PU">
+                <button>Add</button>
+            </fieldset>
+
+            <!-- Données depose ancien revetement -->
+            <fieldset>
+                <legend>Dépose ancien revêtement</legend>
+                <input type="text" name="nombreDeposeAncienRevetement" id="nombreDeposeAncienRevetement" class="" placeholder="Quantité">
+                <input type="text" name="PdlDeposeAncienRevetement" id="PdlDeposeAncienRevetement" class="" placeholder="PDL / PU">
+                <button>Add</button>
+            </fieldset>
+
+            <!-- Données habillage de limons -->
+            <fieldset>
+                <legend>Habillage de limons</legend>
+                <input type="text" name="nombreHabillageLimon" id="nombreHabillageLimon" class="" placeholder="Quantité">
+                <select name="decorHabillageLimon" id="decorHabillageLimon">
+                    <option selected disabled>Décors</option>
+                    {% for Décors in DecorsLimons %}
+                    <option value="{{ Décors.name }}">{{ Décors.name }}</option>
+                    {% endfor %}
+                </select>
+                <button>Add</button>
+            </fieldset>
+
+            <!-- Données panneau palier -->
+            <fieldset>
+                <legend>Panneau Palier</legend>
+                <input type="text" name="nombrePanneauPalier" id="nombrePanneauPalier" class="" placeholder="Quantité">
+                <select name="taillePanneauPalier" id="taillePanneauPalier">
+                    <option selected disabled>Tailles</option>
+                    {% for Taille in TaillesPanneau %}
+                    <option value="{{ Taille.name }}">{{ Taille.name }}</option>
+                    {% endfor %}
+                </select>
+                <button>Add</button>
+            </fieldset>
+
+            <!-- Données stratifie rouleau -->
+            <fieldset>
+                <legend>Stratifié rouleau</legend>
+                <input type="text" name="metrageStratifieRouleau" id="metrageStratifieRouleau" class="" placeholder="Métrage">
+            </fieldset>
+
+            <!-- Données profile de dessus de limon -->
+            <fieldset>
+                <legend>Profilé de dessus de limon</legend>
+                <input type="text" name="nombreL18" id="nombreL18" class="" placeholder="Quantité L18">
+                <input type="text" name="nombreL28" id="nombreL28" class="" placeholder="Quantité L28">
+
+                <input type="text" name="nombreL80" id="nombreL80" class="" placeholder="Quantité L80">
+                <input type="text" name="nombreL120" id="nombreL120" class="" placeholder="Quantité L120">
+
+                <input type="text" name="nombreU58" id="nombreU58" class="" placeholder="Quantité U58">
+                <input type="text" name="nombreU65" id="nombreU65" class="" placeholder="Quantité U65">
+
+                <input type="text" name="nombreU75" id="nombreU75" class="" placeholder="Quantité U75">
+                <input type="text" name="nombreU85" id="nombreU85" class="" placeholder="Quantité U85">
+            </fieldset>
+
+            <!-- Données parquets -->
+            <fieldset>
+                <legend>Parquets</legend>
+                <p>Même décor</p> <input type="text" name="metrageParquet" id="metrageParquet" class="" placeholder="Métrage">
+
+                <p>Dalle</p>
+                <select name="decorDalle" id="decorDalle">
+                    <option selected disabled>Décors</option>
+                    {% for Décors in DécorsParquet %}
+                    <option value="{{ Décors.name }}">{{ Décors.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="metrageDalle" id="metrageDalle" class="" placeholder="Métrage">
+            </fieldset>
+            
+
+            <!-- Données plinthes -->
+            <fieldset>
+                <legend>Plinthes</legend>
+                
+                <input type="text" name="nombreProfile40" id="nombreProfile40" class="" placeholder="40mm Profilé">
+                <input type="text" name="nombreProfile58" id="nombreProfile58" class="" placeholder="58mm Profilé">
+
+                <input type="text" name="nombreProfileDroit58" id="nombreProfileDroit58" class="" placeholder="58mm Droit">
+                <input type="text" name="nombreProfileDroit80" id="nombreProfileDroit80" class="" placeholder="80mm Droit">
+
+                <input type="text" name="nombreProfileDroitBlanc80" id="nombreProfileDroitBlanc80" class="" placeholder="80mm Droit Blanc">
+
+                <input type="text" name="nombreAnglesExterieurs" id="nombreAnglesExterieurs" class="" placeholder="Angles Extérieurs">
+                <input type="text" name="nombreAnglesInterieurs" id="nombreAnglesInterieurs" class="" placeholder="Angles Intérieurs">
+
+                <input type="text" name="nombreModuleFin" id="nombreModuleFin" class="" placeholder="Module de fin">
+            </fieldset>
+            
+
+            <!-- Données isolation phonique -->
+            <fieldset>
+                <legend>Isolation Phonique</legend>
+                <input type="text" name="nombreRouleau" id="nombreRouleau" class="" placeholder="Rouleau 25m²">
+                <input type="text" name="nombreRouleauEtanche" id="nombreRouleauEtanche" class="" placeholder="Rouleau étanche">
+
+                <input type="text" name="nombreIsolationPanneau" id="nombreIsolationPanneau" class="" placeholder="Panneau 6m²">
+            </fieldset>
+        </div>
+
+        <!-- Onglet 4 -->
+        <div id="Mesures" class="tabcontent">
+            <fieldset>
+                <legend>N°1</legend>
+                <select name="formeMarche" id="formeMarche">
+                    <option selected disabled>Forme</option>
+                    {% for Type in TypesMarche %}
+                    <option value="{{ Type.name }}">{{ Type.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="Diagonale1" id="Diagonale1" class="" placeholder="Diagonale">
+
+                <input type="number" name="profondeurG1" id="profondeurG1" class="" placeholder="Profondeur Gauche">
+                <input type="number" name="profondeurD1" id="profondeurD1" class="" placeholder="Profondeur Droite">
+
+                <label for="profileArriere1">Profilé arrière</label>
+                <input type="checkbox" name="profileArriere1" id="profileArriere1" class="">
+
+                <label for="retourGauche1">Retour Gauche</label>
+                <input type="checkbox" name="retourGauche1" id="retourGauche1" class="">
+                <label for="retourDroite1">Retour Droite</label>
+                <input type="checkbox" name="retourDroite1" id="retourDroite1" class="">
+
+                <label for="plintheGauche1">Plinthe Gauche</label>
+                <input type="checkbox" name="plintheGauche1" id="plintheGauche1" class="">
+                <label for="plintheDroite1">Plinthe Droite</label>
+                <input type="checkbox" name="plintheDroite1" id="plintheDroite1" class="">
+
+                <button>+ Ajouter une marche</button>
+            </fieldset>
+
+            <fieldset>
+                <legend>Notes</legend>
+                <input type="file" name="imagesClient" id="imagesClient" class="" accept="image/png, image/jpeg, image/jpg" multiple>
+                <textarea name="commentaire" id="commentaire" class="" placeholder="Vos notes, commentaires utiles pour le projet"></textarea>
+            </fieldset>
+        </div>
+
+        <footer>
+            <input type="submit" value="Terminer">
+        </footer>
+    </form>
+    
+
+    <script>
+        function openCity(evt, cityName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+            }
+    </script>
+</body>

@@ -1,0 +1,24 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+</head>
+<body>
+    <header>
+        <h1>Liste client</h1>
+    </header>
+    <main>
+        <ul>
+            {% for Client in Clients %}
+            <li>
+                {{ Client.Name }} - {{ Client.Firstname }}
+                <form 
+                    action="/DeleteClient/{{Client.id}}/"
+                    method="post"
+                    > {% csrf_token %}
+                    <input type="submit" value="Delete">
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
