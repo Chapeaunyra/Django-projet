@@ -13,7 +13,7 @@ class Devis(models.Model):
     transfo_75w = models.IntegerField(null=True)
     transfo_100w = models.IntegerField(null=True)
 
-    profile_arriere = models.BooleanField(null=True)
+    profile_arriere = models.BooleanField(default=False)
 
     stratifie_rouleau = models.BooleanField(null=True)
 
@@ -41,7 +41,8 @@ class Clients(models.Model):
     # Contact client
     Phone = models.TextField(null=True)
     Smartphone = models.TextField()
-    Email = models.EmailField(null=True, unique=True)
+    # unique=True pas établit, car un client peut revenir pour une autre maison, donc devis à nouveau renseigné.
+    Email = models.EmailField(null=True)
 
     # Adresse Physique client
     Street_number = models.TextField(null=True)
@@ -251,19 +252,19 @@ class Couleur_Bar_Seuil(models.Model):
 
 # Type pour certains produits
 class Types_Marche(models.Model):
-    name_type = models.TextField()
+    name = models.TextField()
     description = models.TextField()
 
 class Types_Marche_Paliere(models.Model):
-    name_type = models.TextField()
+    name = models.TextField()
     description = models.TextField()
 
 class Types_Profile(models.Model):
-    name_type = models.TextField()
+    name = models.TextField()
     description = models.TextField()
 
 class Types_Bar_Seuil(models.Model):
-    name_type = models.TextField()
+    name = models.TextField()
     description = models.TextField()
 
 # Taille pour certains produits

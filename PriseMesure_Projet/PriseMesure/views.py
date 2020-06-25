@@ -55,7 +55,8 @@ def NouveauDevis(request):
         transfo_75w = request.POST['nombreTransfo75W'],
         transfo_100w = request.POST['nombreTransfo100W'],
 
-        profile_arriere = request.POST['profileArriere1'],
+        # Pour les checkbox, utiliser ==> my_var = dict.get(<key>, <default>)
+        profile_arriere = request.POST.get('profile_arriere', False),
 
         stratifie_rouleau = request.POST['metrageStratifieRouleau'],
 
@@ -81,8 +82,19 @@ def NouveauDevis(request):
         Smartphone = request.POST['smartphone'],
         Email = request.POST['email'],
 
-        Id_devis = new_devis
+        devis_id = new_devis
     )
+
+    
+
+
+
+
+
+
+
+
+
     new_devis.save()
     new_client.save()
 

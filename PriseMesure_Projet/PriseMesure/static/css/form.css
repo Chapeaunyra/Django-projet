@@ -1,0 +1,53 @@
+* {
+    list-style: none;
+    text-decoration: none;
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+body {
+    width: 50%;
+    margin: auto;
+    background-color: #3E2A35;
+}
+
+header {
+    background: #923A02;
+    color: burlywood;
+
+    height: 5em;
+    padding: 0.5em;
+
+    border-radius: 0px 0px 5px 5px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+main {
+    background-color: #FCEFEE;
+
+}
+
+#onglets {
+    display: flex;
+    justify-content: space-around;
+}
+
+#onglets>button {
+    width: 25%;
+    background-color: black;
+    color: white;
+
+    border: solid 1px grey;
+}
+
+#onglets>button:hover {
+    background-color: white;
+    color: black;
+
+}
+
+fieldset>div {
+    display: flex;
+    justify-content: flex-start;
+}
