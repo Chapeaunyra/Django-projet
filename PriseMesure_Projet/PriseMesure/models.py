@@ -1,9 +1,31 @@
 from django.db import models
 
-
-
 # Utile pour le récapitulatif dans ListeClient/{{Clients.id}}/détails/
 class Devis(models.Model):
+    # Partie récapitulative du projet
+        # Partie sur les marches
+    nombre_marches = models.IntegerField(null=True)
+    decor_marches = models.TextField(null=True)
+        # Partie sur les contremarches
+    nombre_contremarches = models.IntegerField(null=True)
+    decor_contremarches = models.TextField(null=True)
+        # Partie sur les profilés aluminium
+    nombre_profile_alu = models.IntegerField(null=True)
+    type_profile_alu = models.TextField(null=True)
+        # Partie sur les plinthes
+    nombre_plinthes = models.IntegerField(null=True)
+    taille_plinthes = models.TextField(null=True)
+        # Partie sur les barres de seuil
+    nombre_barres_seuil = models.IntegerField(null=True)
+    type_barres_seuil = models.TextField(null=True)
+    couleur_barres_seuil = models.TextField(null=True)
+        # Partie sur les marches palières
+    nombre_marches_paliere = models.IntegerField(null=True)
+    type_marches_paliere = models.TextField(null=True)
+    taille_marches_paliere = models.TextField(null=True)
+
+    # Partie des accessoires des marches
+        # Matériel Electrique
     marche_Eclairee = models.IntegerField(null=True)
     marche_Non_Eclairee = models.IntegerField(null=True)
     interrupteur = models.IntegerField(null=True)
@@ -12,11 +34,9 @@ class Devis(models.Model):
     transfo_35w = models.IntegerField(null=True)
     transfo_75w = models.IntegerField(null=True)
     transfo_100w = models.IntegerField(null=True)
-
-    profile_arriere = models.BooleanField(default=False)
-
-    stratifie_rouleau = models.BooleanField(null=True)
-
+        # Stratifié rouleau
+    stratifie_rouleau = models.TextField(null=True)
+        # Profilé de dessus de limon
     profile_limon_l18 = models.IntegerField(null=True)
     profile_limon_l28 = models.IntegerField(null=True)
     profile_limon_l80 = models.IntegerField(null=True)
@@ -26,13 +46,28 @@ class Devis(models.Model):
     profile_limon_u65 = models.IntegerField(null=True)
     profile_limon_u75 = models.IntegerField(null=True)
     profile_limon_u85 = models.IntegerField(null=True)
-
+        # Parquets
+    metrage_parquet = models.TextField(null=True)
+    metrage_parquet_dalle = models.TextField(null=True)
+    decor_parquet_dalle = models.TextField(null=True)
+        # Plinthes
+    profile_40mm = models.IntegerField(null=True)
+    profile_58mm = models.IntegerField(null=True)
+    droit_58mm = models.IntegerField(null=True)
+    droit_80mm = models.IntegerField(null=True)
+    droit_blanc_80mm = models.IntegerField(null=True)
+    
+    angles_exterieurs = models.IntegerField(null=True)
+    angles_interieurs = models.IntegerField(null=True)
+    nombre_module_fin = models.IntegerField(null=True)
+        # Isolation phonique
+    rouleau = models.IntegerField(null=True)
+    rouleau_etange = models.IntegerField(null=True)
+    panneau = models.IntegerField(null=True)
+    
+        # Commentaire utilisateur, des spécifitées lié à la pose etc ...
     commentaire = models.TextField(null=True)
 
-
-
-
-# PARTIE CLIENT
 class Clients(models.Model):
     # Identité client
     Name = models.TextField(null=True)
@@ -54,23 +89,15 @@ class Clients(models.Model):
     Stamp = models.ImageField(null=True)
     Date_created = models.DateField(auto_now=True)
 
-    devis_id = models.ForeignKey(Devis, on_delete=models.PROTECT)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Photos(models.Model):
     # Photos prise chez les clients
     photo = models.ImageField(null=True)
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 
-
-
-# PARTIE PRISE DE MESURE
-class Marches(models.Model):
-    number = models.IntegerField(null=True)
-    decor = models.TextField(null=True)
-    
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
+# PRISE DE MESURE
 class Mesure_Marches(models.Model):
     # Informations de base
     type_stair = models.TextField(null=True)
@@ -79,157 +106,80 @@ class Mesure_Marches(models.Model):
     DepthR = models.TextField(null=True)
 
     # Options
-    RetourG = models.BooleanField(null=True)
-    RetourD = models.BooleanField(null=True)
-    PlintheG = models.BooleanField(null=True)
-    PlintheD = models.BooleanField(null=True)
+    RetourG = models.BooleanField(null=True, default=False)
+    RetourD = models.BooleanField(null=True, default=False)
+    PlintheG = models.BooleanField(null=True, default=False)
+    PlintheD = models.BooleanField(null=True, default=False)
+    ProfileArriere = models.BooleanField(null=True, default=False)
 
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-class Contremarches(models.Model):
-    number = models.IntegerField(null=True)
-    decor = models.TextField(null=True)
-
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-class Profiles(models.Model):
-    number = models.IntegerField(null=True)
-    typeProfile = models.TextField(null=True)
-
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-class Plinthes(models.Model):
-    number = models.IntegerField(null=True)
-    typeProfile = models.TextField(null=True)
-    
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-class Barres_Seuil(models.Model):
-    number = models.IntegerField(null=True)
-    taille = models.TextField(null=True)
-    
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-class Marches_Paliere(models.Model):
-    number = models.IntegerField(null=True)
-    typeMarchePaliere = models.TextField(null=True)
-    decor = models.TextField(null=True)
-    
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Marches_Ronde(models.Model):
     number = models.IntegerField(null=True)
     taille = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Limons_Interieur(models.Model):
     length = models.TextField(null=True)
     pdl = models.TextField(null=True)
-    orientation = models.BooleanField() # 0 pour gauche, 1 pour droite
+    orientation = models.BooleanField(null=True) # 0 pour gauche, 1 pour droite
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Limons_Exterieur(models.Model):
     number = models.IntegerField(null=True)
     pdl = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Habillages_Dessus(models.Model):
     number = models.IntegerField(null=True)
     pdl = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Decoupes_Nez_Marche(models.Model):
     number = models.IntegerField(null=True)
     pdl = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Poses_Parquet(models.Model):
     number = models.IntegerField(null=True)
     pdl = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Balustrades(models.Model):
     number = models.IntegerField(null=True)
     pdl = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Creations_Contremarche(models.Model):
     number = models.IntegerField(null=True)
     pdl = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Deposes_Ancien_Revetement(models.Model):
     number = models.IntegerField(null=True)
     pdl = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Habillages_Limon(models.Model):
     number = models.IntegerField(null=True)
     decor = models.TextField(null=True)
     
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 class Panneaux_Palier(models.Model):
     number = models.IntegerField(null=True)
     taille = models.TextField(null=True)
 
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-class Parquets(models.Model):
-    metrage = models.TextField(null=True)
-    dalle_decor = models.TextField(null=True)
-    dalle_metrage = models.TextField(null=True)
-    
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-class Plinthes_Profile(models.Model):
-    profile_40mm = models.IntegerField(null=True)
-    profile_58mm = models.IntegerField(null=True)
-    droit_58mm = models.IntegerField(null=True)
-    droit_80mm = models.IntegerField(null=True)
-    droit_blanc_80mm = models.IntegerField(null=True)
-    
-    angles_exterieurs = models.IntegerField(null=True)
-    angles_interieurs = models.IntegerField(null=True)
-    nombre_module_fin = models.IntegerField(null=True)
-    
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-class Isolations(models.Model):
-    rouleau = models.IntegerField(null=True)
-    rouleau_etange = models.IntegerField(null=True)
-    panneau = models.IntegerField(null=True)
-    
-    devis_id = models.ForeignKey(Devis, on_delete=models.CASCADE)
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 
 # PARTIE FORMULAIRE DE PRISE DE MESURE
@@ -243,7 +193,13 @@ class Decors_Contremarche(models.Model):
 class Decors_Parquet(models.Model):
     name = models.TextField()
 
+class Decors_Parquet_Dalle(models.Model):
+    name = models.TextField()
+
 class Decors_Limon(models.Model):
+    name = models.TextField()
+
+class Decors_Habillage_Limon(models.Model):
     name = models.TextField()
 
 class Couleur_Bar_Seuil(models.Model):
