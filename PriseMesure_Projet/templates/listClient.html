@@ -3,6 +3,7 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Liste de client</title>
         <!-- Liens externes -->
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
@@ -21,22 +22,26 @@
             </div>
         </header>
         <main>
-            <ul>
+            <ul class="container">
                 {% for Client in Clients %}
                 <li>
-                    {{ Client.Name }} - {{ Client.Firstname }}
+                    <p style="display: inline-block;">
+                        <a href="/ListeClient/{{Client.id}}/">{{ Client.Name }} - {{ Client.Firstname }}</a>
+                    </p>
                     <form 
                         action="/DeleteClient/{{Client.id}}/"
                         method="post"
+                        style="display: inline-block;"
                         > {% csrf_token %}
-                        <input type="submit" value="Delete">
+                        <input type="submit" value="Delete" class="btn btn-danger">
                     </form>
-                    <form 
+                    <!-- <form 
                         action="/UpdateClient/{{Client.id}}/"
                         method="post"
+                        style="display: inline-block;"
                         > {% csrf_token %}
-                        <input type="submit" value="UpdateClient">
-                    </form>
+                        <input type="submit" value="UpdateClient" class="btn btn-warning">
+                    </form> -->
                 </li>
                 {% endfor %}
             </ul>

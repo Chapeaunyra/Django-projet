@@ -11,10 +11,24 @@ a:hover, a:link, a:hover, a:active {
 }
 
 body {
-    width: 50%;
-    margin: auto;
-    background-color: #3E2A35;
+    width: 100%;
     
+}
+
+@media (min-width:800px) {
+    body {
+        width: 70%;
+        margin: auto;
+        background-color: #3E2A35;
+    }
+}
+
+@media (min-width:1000px) {
+    body {
+        width: 60%;
+        margin: auto;
+        background-color: #3E2A35;
+    }
 }
 
 header {
@@ -86,4 +100,8 @@ footer>ul>li {
 fieldset>div {
     display: flex;
     justify-content: flex-start;
+}
+
+#endButton {
+
 }

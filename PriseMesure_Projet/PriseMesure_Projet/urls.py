@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from PriseMesure.views import (AccueilView, ListClientsView, PriseMesure, NouveauDevis, DeleteClient)
+from PriseMesure.views import (AccueilView, ListClientsView, PriseMesure, NouveauDevis, DeleteClient, ClientDetailsView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,5 +23,6 @@ urlpatterns = [
     path('ListeClient/', ListClientsView),
     path('PriseMesure/', PriseMesure),
     path('NouveauDevis/', NouveauDevis),
+    path('ListeClient/<int:client_id>/', ClientDetailsView),
     path('DeleteClient/<int:client_id>/', DeleteClient),
 ]

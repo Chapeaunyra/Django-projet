@@ -94,6 +94,7 @@ class Clients(models.Model):
 class Photos(models.Model):
     # Photos prise chez les clients
     photo = models.ImageField(null=True)
+    
     devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 

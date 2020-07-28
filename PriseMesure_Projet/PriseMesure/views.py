@@ -12,6 +12,39 @@ def ListClientsView(request):
     return render(request, 'listClient.html',
         {'Clients' : all_clients})
 
+def ClientDetailsView(request, client_id):
+    client_details = Clients.objects.get(id = client_id)
+    devis_details = Devis.objects.get(id = client_details.devis.id)
+    prise_mesure_details = Mesure_Marches.objects.filter(devis = devis_details.id)
+    marche_rondes = Marches_Ronde.objects.filter(devis = devis_details.id)
+    limon_ext = Limons_Exterieur.objects.filter(devis = devis_details.id)
+    limon_int = Limons_Interieur.objects.filter(devis = devis_details.id)
+    habillage_dessus = Habillages_Dessus.objects.filter(devis = devis_details.id)
+    decoupe_nez = Decoupes_Nez_Marche.objects.filter(devis = devis_details.id)
+    pose_parquet = Poses_Parquet.objects.filter(devis = devis_details.id)
+    balustrade = Balustrades.objects.filter(devis = devis_details.id)
+    crea_cm = Creations_Contremarche.objects.filter(devis = devis_details.id)
+    depose_ancien_revet = Deposes_Ancien_Revetement.objects.filter(devis = devis_details.id)
+    habillage_limon = Habillages_Limon.objects.filter(devis = devis_details.id)
+    panneau_palier = Panneaux_Palier.objects.filter(devis = devis_details.id)
+    
+    return render(request, 'clientDetails.html',
+        {'Client':client_details,
+         'Details': devis_details,
+         'PriseMesure': prise_mesure_details,
+         'MarcheRonde':marche_rondes,
+         'LimonExt':limon_ext,
+         'LimonInt':limon_int,
+         'HabillageDessus':habillage_dessus,
+         'DecoupeNez':decoupe_nez,
+         'PoseParquet':pose_parquet,
+         'Balustrade':balustrade,
+         'CreationContremarche':crea_cm,
+         'DeposeAncienRevet':depose_ancien_revet,
+         'HabillageLimon':habillage_limon,
+         'PanneauPalier':panneau_palier,
+        })
+
 def PriseMesure(request):
     decors_marches = Decors_Marche.objects.all()
     decors_contremarches = Decors_Contremarche.objects.all()
@@ -50,18 +83,18 @@ def PriseMesure(request):
         })
 
 def NouveauDevis(request):
-    totalMarcheRonde = request.POST['totalMarcheRonde']
-    totalLimonInterieur = request.POST['totalLimonInterieur']
-    totalLimonExterieur = request.POST['totalLimonExterieur']
-    totalHabillageDessus = request.POST['totalHabillageDessus']
-    totalDecoupeNezMarche = request.POST['totalDecoupeNezMarche']
-    totalPoseParquet = request.POST['totalPoseParquet']
-    totalBalustrade = request.POST['totalBalustrade']
-    totalCreationContremarche = request.POST['totalCreationContremarche']
-    totalDeposeAncienRevetement = request.POST['totalDeposeAncienRevetement']
-    totalHabillageLimon = request.POST['totalHabillageLimon']
-    totalPanneauPalier = request.POST['totalPanneauPalier']
-    totalMarche = request.POST['totalMarche']
+    totalMarcheRonde = int(request.POST['totalMarcheRonde'])
+    totalLimonInterieur = int(request.POST['totalLimonInterieur'])
+    totalLimonExterieur = int(request.POST['totalLimonExterieur'])
+    totalHabillageDessus = int(request.POST['totalHabillageDessus'])
+    totalDecoupeNezMarche = int(request.POST['totalDecoupeNezMarche'])
+    totalPoseParquet = int(request.POST['totalPoseParquet'])
+    totalBalustrade = int(request.POST['totalBalustrade'])
+    totalCreationContremarche = int(request.POST['totalCreationContremarche'])
+    totalDeposeAncienRevetement = int(request.POST['totalDeposeAncienRevetement'])
+    totalHabillageLimon = int(request.POST['totalHabillageLimon'])
+    totalPanneauPalier = int(request.POST['totalPanneauPalier'])
+    totalMarche = int(request.POST['totalMarche'])
     
     
     
@@ -133,187 +166,168 @@ def NouveauDevis(request):
     new_client.save()
 
     # MARCHE RONDE
-    for i in totalMarcheRonde:
-        a = 1
+    if totalMarcheRonde != 0:
+        marche_ronde = [
+            Marches_Ronde (
+                number = request.POST.get('nombreMarcheRonde' + str(i), "1"),
+                taille = request.POST.get('tailleMarcheRonde' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalMarcheRonde))
+        ]
+        Marches_Ronde.objects.bulk_create(marche_ronde)
 
     # LIMON INTERIEUR
-    for i in totalLimonInterieur:
-        a = 1
+    if totalLimonInterieur != 0:
+        limon_interieur = [
+            Limons_Interieur (
+                length = request.POST.get('longueurLimonInterieur' + str(i), "0"),
+                pdl = request.POST.get('PdlLimonInterieur' + str(i), "Non renseigné"),
+                orientation = request.POST.get('coteLimonInterieur' + str(i), 0), # 0 pour gauche, 1 pour droite
+
+                devis = new_devis
+            )
+            for i in (range(totalLimonInterieur))
+        ]
+        Limons_Interieur.objects.bulk_create(limon_interieur)
 
     # LIMON EXTERIEUR
-    for i in totalLimonExterieur:
-        a = 1
+    if totalLimonExterieur != 0:
+        limon_exterieur = [
+            Limons_Exterieur (
+                number = request.POST.get('nombreLimonExterieur' + str(i), "0"),
+                pdl = request.POST.get('PdlLimonExterieur' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalLimonExterieur))
+        ]
+        Limons_Exterieur.objects.bulk_create(limon_exterieur)
 
     # HABILLAGE DESSUS
-    for i in totalHabillageDessus:
-        a = 1
+    if totalHabillageDessus != 0:
+        habillage_dessus = [
+            Habillages_Dessus (
+                number = request.POST.get('nombreHabillageDessus' + str(i), "0"),
+                pdl = request.POST.get('PdlHabillageDessus' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalHabillageDessus))
+        ]
+        Habillages_Dessus.objects.bulk_create(habillage_dessus)
 
     # DECOUPE NEZ DE MARCHE
-    for i in totalDecoupeNezMarche:
-        a = 1
+    if totalDecoupeNezMarche != 0:
+        decoupe_nez_marche = [
+            Decoupes_Nez_Marche (
+                number = request.POST.get('nombreDecoupeNezMarche' + str(i), "0"),
+                pdl = request.POST.get('PdlDecoupeNezMarche' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalDecoupeNezMarche))
+        ]
+        Decoupes_Nez_Marche.objects.bulk_create(decoupe_nez_marche)
 
     # POSE PARQUET
-    for i in totalPoseParquet:
-        a = 1
+    if totalDecoupeNezMarche != 0:
+        decoupe_nez_marche = [
+            Decoupes_Nez_Marche (
+                number = request.POST.get('nombreDecoupeNezMarche' + str(i), "0"),
+                pdl = request.POST.get('PdlDecoupeNezMarche' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalDecoupeNezMarche))
+        ]
+        Decoupes_Nez_Marche.objects.bulk_create(decoupe_nez_marche)
 
     # BALUSTRADE
-    for i in totalBalustrade:
-        a = 1
+    if totalBalustrade != 0:
+        balustrade = [
+            Balustrades (
+                number = request.POST.get('nombreBalustrade' + str(i), "0"),
+                pdl = request.POST.get('PdlBalustrade' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalBalustrade))
+        ]
+        Balustrades.objects.bulk_create(balustrade)
 
     # CREATION CONTREMARCHE
-    for i in totalCreationContremarche:
-        a = 1
+    if totalCreationContremarche != 0:
+        creation_contremarche = [
+            Creations_Contremarche (
+                number = request.POST.get('nombreCreationContremarche' + str(i), "0"),
+                pdl = request.POST.get('PdlCreationContremarche' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalCreationContremarche))
+        ]
+        Creations_Contremarche.objects.bulk_create(creation_contremarche)
 
     # DEPOSE ANCIEN REVETEMENT
-    for i in totalDeposeAncienRevetement:
-        a = 1
+    if totalDeposeAncienRevetement != 0:
+        depose_ancien_revetement = [
+            Deposes_Ancien_Revetement (
+                number = request.POST.get('nombreDeposeAncienRevetement' + str(i), "0"),
+                pdl = request.POST.get('PdlDeposeAncienRevetement' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalDeposeAncienRevetement))
+        ]
+        Deposes_Ancien_Revetement.objects.bulk_create(depose_ancien_revetement)
 
     # HABILLAGE LIMON
-    for i in totalHabillageLimon:
-        a = 1
+    if totalHabillageLimon != 0:
+        habillage_limon = [
+            Habillages_Limon (
+                number = request.POST.get('nombreHabillageLimon' + str(i), "0"),
+                decor = request.POST.get('decorHabillageLimon' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalHabillageLimon))
+        ]
+        Habillages_Limon.objects.bulk_create(habillage_limon)
 
     # PANNEAU PALIER
-    for i in totalPanneauPalier:
-        a = 1
+    if totalPanneauPalier != 0:
+        panneau_palier = [
+            Panneaux_Palier (
+                number = request.POST.get('nombrePanneauPalier' + str(i), "0"),
+                taille = request.POST.get('taillePanneauPalier' + str(i), "Non renseigné"),
+
+                devis = new_devis
+            )
+            for i in (range(totalPanneauPalier))
+        ]
+        Panneaux_Palier.objects.bulk_create(panneau_palier)
 
     # MESURE MARCHE
-    for i in totalMarche:
-        # If nothing was written
-        type_stair = request.POST.get('formeMarche' + str(i), "Non renseigné")
-        Diagonal = request.POST.get('diagonale' + str(i),"Non renseigné")
-        DepthL = request.POST.get('profondeurG' + str(i),"Non renseigné")
-        DepthR = request.POST.get('profondeurD' + str(i), "Non renseigné")
-        RetourG = request.POST.get('retourGauche' + str(i), False)
-        RetourD = request.POST.get('retourDroite' + str(i), False)
-        PlintheG = request.POST.get('plintheGauche' + str(i), False)
-        PlintheD = request.POST.get('plintheDroite' + str(i), False)
-        ProfileArriere = request.POST.get('profileArriere' + str(i), False)
+    if totalMarche != 0:
+        prise_mesure = [
+            Mesure_Marches (
+                type_stair = request.POST.get('formeMarche' + str(i), "Non renseigné"),
+                Diagonal = request.POST.get('diagonale' + str(i),"0"),
+                DepthL = request.POST.get('profondeurG' + str(i),"0"),
+                DepthR = request.POST.get('profondeurD' + str(i), "0"),
+                RetourG = request.POST.get('retourGauche' + str(i), False),
+                RetourD = request.POST.get('retourDroite' + str(i), False),
+                PlintheG = request.POST.get('plintheGauche' + str(i), False),
+                PlintheD = request.POST.get('plintheDroite' + str(i), False),
+                ProfileArriere = request.POST.get('profileArriere' + str(i), False),
 
-        # If something was written but not accepted by Database
-        if(RetourG == "on"):
-            RetourG = True
-        if(RetourD == "on"):
-            RetourD = True
-        if(PlintheG == "on"):
-            PlintheG = True
-        if(PlintheD == "on"):
-            PlintheD = True
-        if(ProfileArriere == "on"):
-            ProfileArriere = True
-
-        # Creating the objet
-    
-    prise_mesure = [
-        Mesure_Marches (
-            type_stair = type_stair,
-            Diagonal = Diagonal,
-            DepthL = DepthL,
-            DepthR = DepthR,
-            RetourG = RetourG,
-            RetourD = RetourG,
-            PlintheG = RetourG,
-            PlintheD = RetourG,
-            ProfileArriere = ProfileArriere,
-
-            devis = new_devis
-        )
-        for i in totalMarche
-    ]
-    mesure_marches = Mesure_Marches.objects.bulk_create(prise_mesure)
-    
-        # new_prise_mesure = Mesure_Marches (
-        #     type_stair = type_stair,
-        #     Diagonal = Diagonal,
-        #     DepthL = DepthL,
-        #     DepthR = DepthR,
-        #     RetourG = RetourG,
-        #     RetourD = RetourG,
-        #     PlintheG = RetourG,
-        #     PlintheD = RetourG,
-        #     ProfileArriere = ProfileArriere,
-
-        #     devis = new_devis
-        # )
-
-        # # Writting data into the database
-        # new_prise_mesure.save()
-        
-
-
-    
-    # new_marches_rondes = Marches_Ronde (
-    #     # number = request.POST['nombreMarcheRonde'],
-    #     # taille = request.POST['tailleMarcheRonde'],
-
-    #     devis = new_devis
-    # )
-    # new_limon_interieur = Limons_Interieur(
-    # #     number = request.POST['longueurLimonInterieur'],
-    # #     taille = request.POST['tailleMarcheRonde'],
-    # #     taille = request.POST['tailleMarcheRonde'],
-
-
-    #     devis = new_devis
-    # )
-    # new_limon_exterieur = Limons_Exterieur(
-
-    #     devis = new_devis
-    # )
-    # new_habillage_limon = Habillages_Dessus (
-
-
-    #     devis = new_devis
-    # )
-    # new_decoupe_nez_marche = Decoupes_Nez_Marche (
-
-
-    #     devis = new_devis
-    # )
-    # new_pose_parquet = Poses_Parquet(
-
-
-    #     devis = new_devis
-    # )
-    # new_balustrades = Balustrades(
-
-
-    #     devis = new_devis
-    # )
-    # new_creation_contremarche = Creations_Contremarche(
-
-
-    #     devis = new_devis
-    # )
-    # new_depose_ancien_revetement = Deposes_Ancien_Revetement(
-
-
-    #     devis = new_devis
-    # )
-    # new_habillage_limon = Habillages_Limon(
-
-
-    #     devis = new_devis
-    # )
-    # new_panneau_palier = Panneaux_Palier(
-
-
-    #     devis = new_devis
-    # )
-    
-    # new_marches_rondes.save()
-    # new_limon_interieur.save()
-    # new_limon_exterieur.save()
-    # new_habillage_limon.save()
-    # new_decoupe_nez_marche.save()
-    # new_pose_parquet.save()
-    # new_balustrades.save()
-    # new_creation_contremarche.save()
-    # new_depose_ancien_revetement.save()
-    # new_habillage_limon.save()
-    # new_panneau_palier.save()
-
-    
-
+                devis = new_devis
+            )
+            for i in (range(totalMarche))
+        ]
+        Mesure_Marches.objects.bulk_create(prise_mesure)    
 
     return HttpResponseRedirect('/')
 
