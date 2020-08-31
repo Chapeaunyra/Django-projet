@@ -8,49 +8,138 @@
         <!-- Liens externes -->
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
     
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        
         <!-- Liens interne -->
+        <link rel="icon" type="image/png" href="{% static 'images/home.png' %}" />
         <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/form.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/reset.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/detailsClient.css' %}" />
     </head>
     <body>
-        <header>
-            <div>
-                <h1>Détails Client</h1>
-            </div>
-            <div id="back">
-                <a href="/">Back</a>
+        <header class="container-fluid bg-dark">
+            <div class="row">
+                <div class="col-10">
+                    <h1 class="h1 text-light col-10">Détails</h1>
+                </div>
+                <div class="col-2">
+                    <a href="/ListeClient" class="badge badge-pill badge-info">
+                        <button class="btn btn-info">
+                            Retour
+                        </button>
+                    </a>
+                </div>
             </div>
         </header>
         <main class="container">
-            <!-- Clients -->
-            <fieldset class="container">
-                <legend class="row">{{ Client.Name }} - {{ Client.Firstname }} | {{ Client.Date_created }}</legend>
-                <div class="row">
-                    <p>
-                        {{ Client.Street_number }} {{ Client.Street }}, {{ Client.Postal_code }}, {{ Client.City }}
-                    </p>
-                </div>
-                <div class="row">
-                    <span class="col-2">Téléphone</span>
-                    <p class="col-4">
-                        {{ Client.Phone }}
-                    </p>
-                    <span class="col-2">Portable</span>
-                    <p class="col-4">
-                        {{ Client.Smartphone }}
-                    </p>
-                </div>
-                <div class="row">
-                    <p class="col-6">
-                        {{ Client.Email }}
-                    </p>
+            <div class="container">
+                <!-- Clients -->
+            <fieldset class="row">
+                <legend class="col-auto"> <span class="badge badge-info">N° {{ Details.id }}</span> {{ Client.Name }} {{ Client.Firstname }} | {{ Client.Date_created }}</legend>
+                <div class="container">
+                    <div class="row">
+                        <p class="col-auto p-inline">
+                            {% if Client.Street_number %}
+                                {{ Client.Street_number }}
+                            {% else %}
+                                <span class='badge badge-danger'>N° Inconnu</span>
+                            {% endif %}
+                        </p>
+                        <p class="col-auto p-inline">
+                            {% if Client.Street %}
+                                {{ Client.Street }},
+                            {% else %}
+                                <span class='badge badge-danger'>Rue inconnu</span>,
+                            {% endif %}
+                        </p>
+                        <p class="col-auto p-inline">
+                            {% if Client.Postal_code %}
+                                {{ Client.Postal_code }},
+                            {% else %}
+                                <span class='badge badge-danger'>Code postal inconnu</span>,
+                            {% endif %}
+                        </p>
+                        <p class="col-auto p-inline">
+                            {% if Client.City %}
+                                {{ Client.City }},
+                            {% else %}
+                                <span class='badge badge-danger'>Ville non renseigné</span>,
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-4">
+                            {% if Client.Phone %}
+                                <img src="{% static 'images/phone.svg' %}" alt="Phone" width="25px"> {{ Client.Phone }}
+                            {% else %}
+                            <span class='badge badge-danger'>Non renseigné</span>
+                            {% endif %}
+                        </p>
+                        <p class="col-4">
+                            {% if Client.Smartphone %}
+                                <img src="{% static 'images/smartphone.svg' %}" alt="Phone" width="15px"> {{ Client.Smartphone }}
+                            {% else %}
+                                <span class='badge badge-danger'>Non renseigné</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-6">
+                            {% if Client.Email %}
+                                {{ Client.Email }}
+                            {% else %}
+                                {{ "<span class='badge badge-danger'>Non renseigné</span>" }}
+                            {% endif %}
+                        </p>
+                    </div>
                 </div>
             </fieldset>
+
+            <!-- Adresse chantier -->
+            <fieldset class="row">
+                <legend class="col-auto"> Adresse chantier</legend>
+                <div class="container">
+                    <div class="row">
+                        <p class="col-auto p-inline">
+                            {% if Client.Street_number_site %}
+                                {{ Client.Street_number_site }}
+                            {% else %}
+                                <span class='badge badge-danger'>Non renseigné</span>
+                            {% endif %}
+                        </p>
+                        <p class="col-auto p-inline">
+                            {% if Client.Street_site %}
+                                {{ Client.Street_site }},
+                            {% else %}
+                                <span class='badge badge-danger'>?</span>,
+                            {% endif %}
+                        </p>
+                        <p class="col-auto p-inline">
+                            {% if Client.Postal_code_site %}
+                                {{ Client.Postal_code_site }},
+                            {% else %}
+                                <span class='badge badge-danger'>?</span>,
+                            {% endif %}
+                        </p>
+                        <p class="col-auto p-inline">
+                            {% if Client.City_site %}
+                                {{ Client.City_site }},
+                            {% else %}
+                                {<span class='badge badge-danger'>Ville non renseigné</span>,
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+            
             <!-- Mesure marche -->
-            <fieldset class="container">
-                <legend class="row">Mesure des marches</legend>
-                <div class="row">
-                    <table class="table table-hover table-reponsive-sm">
+            <fieldset class="row">
+                <legend class="col-auto">Mesure des marches</legend>
+                <div class="col-12 table-responsive">
+                    <table class="table table-hover">
                         <thead>
                           <tr>
                             <th scope="col">Type</th>
@@ -83,341 +172,620 @@
                 </div>
             </fieldset>
             <!-- Devis -->
-            <fieldset class="container">
-                <legend class="row">Devis</legend>
-                <hr>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre marches : {{ Details.nombre_marches }}
-                    </p>
-                    <p class="col-6">
-                        Décors marches : {{ Details.decor_marches }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre contremarches : {{ Details.nombre_contremarches }}
-                    </p>
-                    <p class="col-6">
-                        Décors contremarches : {{ Details.decor_contremarches }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre profilé alu : {{ Details.nombre_profile_alu }}
-                    </p>
-                    <p class="col-6">
-                        Type profilé alu : {{ Details.type_profile_alu }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre plinthes : {{ Details.nombre_plinthes }}
-                    </p>
-                    <p class="col-6">
-                        Taille plinthes : {{ Details.taille_plinthes }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-4">
-                        Nombre barre de seuil : {{ Details.nombre_barres_seuil }}
-                    </p>
-                    <p class="col-4">
-                        Type barre de seuil : {{ Details.type_barres_seuil }}
-                    </p>
-                    <p class="col-4">
-                        Couleurs barre de seuil : {{ Details.couleur_barres_seuil }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-4">
-                        Nombre marche palière : {{ Details.nombre_marches_paliere }}
-                    </p>
-                    <p class="col-4">
-                        Type marche palières : {{ Details.type_marches_paliere }}
-                    </p>
-                    <p class="col-4">
-                        Taille marche palière : {{ Details.taille_marches_paliere }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row container">
+            <fieldset class="row">
+                <legend class="col-auto">Devis</legend>
+                <div class="col-12">
                     <div class="row">
-                        <p class="col-3">
-                            Marche éclairée : {{ Details.marche_Eclairee }}
+                        {% if Details.nombre_marches == 0 and Details.decor_marches == 'False' %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>Aucune marche ronde</span> 
+                            </p>
+                        {% elif Details.nombre_marches == 0 and Details.decor_marches != 'False' %}
+                            <p class="col-6">
+                                Nombre de marches ronde :
+                                <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-6">
+                                Décors marches : {{ Details.decor_marches }}
+                            </p>
+                        {% else %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>{{Details.nombre_marches}}</span> marches rondes en <span class='badge badge-info'>{{Details.decor_marches}}</span>
+                            </p>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        {% if Details.nombre_contremarches == 0 and Details.decor_contremarches == 'False' %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>Aucune contremarche</span> 
+                            </p>
+                        {% elif Details.nombre_contremarches == 0 and Details.decor_contremarches != 'False' %}
+                            <p class="col-6">
+                                Nombre de contremarche :
+                                <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-6">
+                                Décors contremarche : {{ Details.decor_contremarches }}
+                            </p>
+                        {% else %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>{{Details.nombre_contremarches}}</span> marches rondes en <span class='badge badge-info'>{{Details.decor_contremarches}}</span>
+                            </p>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        {% if Details.nombre_profile_alu == 0 and Details.type_profile_alu == 'False' %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>Aucun profilé aluminium</span> 
+                            </p>
+                        {% elif Details.nombre_profile_alu == 0 and Details.type_profile_alu != 'False' %}
+                            <p class="col-6">
+                                Nombre de profilé aluminium :
+                                <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-6">
+                                Type profilé aluminium : {{ Details.type_profile_alu }}
+                            </p>
+                        {% else %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>{{Details.nombre_profile_alu}}</span> profilé alu <span class='badge badge-info'>{{Details.type_profile_alu}}</span>
+                            </p>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        {% if Details.nombre_plinthes == 0 and Details.taille_plinthes == 'False' %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>Aucun profilé aluminium</span> 
+                            </p>
+                        {% elif Details.nombre_plinthes == 0 and Details.taille_plinthes != 'False' %}
+                            <p class="col-6">
+                                Nombre de plinthes :
+                                <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-6">
+                                Taille plinthes : {{ Details.taille_plinthes }}
+                            </p>
+                        {% else %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>{{Details.nombre_plinthes}}</span> plinthes en <span class='badge badge-info'>{{Details.taille_plinthes}}</span>
+                            </p>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        {% if Details.nombre_barres_seuil == 0 and Details.type_barres_seuil == 'False' and Details.couleur_barres_seuil == 'False' %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>Aucun profilé aluminium</span> 
+                            </p>
+                        {% elif Details.nombre_barres_seuil != 0 and Details.type_barres_seuil == 'False' and Details.couleur_barres_seuil == 'False' %}
+                            <p class="col-4">
+                                Nombre barre de seuil :
+                                <span class='badge badge-info'>{{ Details.nombre_barres_seuil }}</span> 
+                            </p>
+                            <p class="col-4">
+                                Type barre de seuil : <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-4">
+                                Couleurs barre de seuil :<span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                        {% elif Details.nombre_barres_seuil == 0 and Details.type_barres_seuil != 'False' and Details.couleur_barres_seuil != 'False' %}
+                            <p class="col-4">
+                                Nombre barre de seuil :
+                                <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-4">
+                                Type barre de seuil : <span class='badge badge-info'>{{ Details.type_barres_seuil }}</span> 
+                            </p>
+                            <p class="col-4">
+                                Couleurs barre de seuil :<span class='badge badge-info'>{{ Details.couleur_barres_seuil }}</span> 
+                            </p>
+                        {% elif Details.nombre_barres_seuil != 0 and Details.type_barres_seuil == 'False' and Details.couleur_barres_seuil != 'False' %}
+                            <p class="col-4">
+                                Nombre barre de seuil :
+                                <span class='badge badge-info'>{{ Details.nombre_barres_seuil }}</span> 
+                            </p>
+                            <p class="col-4">
+                                Type barre de seuil : <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-4">
+                                Couleurs barre de seuil :<span class='badge badge-info'>{{ Details.couleur_barres_seuil }}</span> 
+                            </p>
                         </p>
-                        <p class="col-3">
-                            Marche éteinte : {{ Details.marche_Non_Eclairee }}
+                        {% elif Details.nombre_barres_seuil != 0 and Details.type_barres_seuil != 'False' and Details.couleur_barres_seuil == 'False' %}
+                            <p class="col-4">
+                                Nombre barre de seuil :
+                                <span class='badge badge-info'>{{ Details.nombre_barres_seuil }}</span>
+                            </p>
+                            <p class="col-4">
+                                Type barre de seuil : <span class='badge badge-info'>{{ Details.type_barres_seuil }}</span> 
+                            </p>
+                            <p class="col-4">
+                                Couleurs barre de seuil :<span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                        {% else %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>{{Details.nombre_barres_seuil}}</span> bar de seuil de type 
+                                <span class='badge badge-info'>{{Details.type_barres_seuil}}</span> en 
+                                <span class='badge badge-info'>{{Details.couleur_barres_seuil}}</span>
+                            </p>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        {% if Details.nombre_marches_paliere == 0 and Details.type_marches_paliere == 'False' and Details.taille_marches_paliere == 'False' %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>Aucun profilé aluminium</span> 
+                            </p>
+                        {% elif Details.nombre_marches_paliere != 0 and Details.type_marches_paliere == 'False' and Details.taille_marches_paliere == 'False' %}
+                            <p class="col-4">
+                                Nombre barre de seuil :
+                                <span class='badge badge-info'>{{ Details.nombre_marches_paliere }}</span> 
+                            </p>
+                            <p class="col-4">
+                                Type barre de seuil : <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-4">
+                                Couleurs barre de seuil :<span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                        {% elif Details.nombre_marches_paliere == 0 and Details.type_marches_paliere != 'False' and Details.taille_marches_paliere != 'False' %}
+                            <p class="col-4">
+                                Nombre barre de seuil :
+                                <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-4">
+                                Type barre de seuil : <span class='badge badge-info'>{{ Details.type_marches_paliere }}</span> 
+                            </p>
+                            <p class="col-4">
+                                Couleurs barre de seuil :<span class='badge badge-info'>{{ Details.taille_marches_paliere }}</span> 
+                            </p>
+                        {% elif Details.nombre_marches_paliere != 0 and Details.type_marches_paliere == 'False' and Details.couleur_barres_seuil != 'False' %}
+                            <p class="col-4">
+                                Nombre barre de seuil :
+                                <span class='badge badge-info'>{{ Details.nombre_marches_paliere }}</span> 
+                            </p>
+                            <p class="col-4">
+                                Type barre de seuil : <span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                            <p class="col-4">
+                                Couleurs barre de seuil :<span class='badge badge-info'>{{ Details.taille_marches_paliere }}</span> 
+                            </p>
                         </p>
-                        <p class="col-3">
-                            Interrupteur : {{ Details.interrupteur }}
-                        </p>
-                        <p class="col-3">
-                            Détecteur : {{ Details.detecteur }}
+                        {% elif Details.nombre_marches_paliere != 0 and Details.type_marches_paliere != 'False' and Details.taille_marches_paliere == 'False' %}
+                            <p class="col-4">
+                                Nombre barre de seuil :
+                                <span class='badge badge-info'>{{ Details.nombre_marches_paliere }}</span>
+                            </p>
+                            <p class="col-4">
+                                Type barre de seuil : <span class='badge badge-info'>{{ Details.type_marches_paliere }}</span> 
+                            </p>
+                            <p class="col-4">
+                                Couleurs barre de seuil :<span class='badge badge-warning'>Non renseigné</span> 
+                            </p>
+                        {% else %}
+                            <p class="col-12">
+                                <span class='badge badge-info'>{{Details.nombre_marches_paliere}}</span> marches palières en
+                                <span class='badge badge-info'>{{Details.type_marches_paliere}}</span> de 
+                                <span class='badge badge-info'>{{Details.taille_marches_paliere}}</span>
+                            </p>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+                                <p class="col-3">
+                                    Marche éclairée : <span class="badge badge-info">{{ Details.marche_Eclairee }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Marche éteinte : <span class="badge badge-info">{{ Details.marche_Non_Eclairee }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Interrupteur : <span class="badge badge-info">{{ Details.interrupteur }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Détecteur : <span class="badge badge-info">{{ Details.detecteur }}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+                                <p class="col-3">
+                                    Unité de cmd : <span class="badge badge-info">{{ Details.unite_commande }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Transfo 35W  : <span class="badge badge-info">{{ Details.transfo_35w }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Transfo 75W  : <span class="badge badge-info">{{ Details.transfo_75w }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Transfo 100W  :<span class="badge badge-info">{{ Details.transfo_100w }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <p class="col-8">
+                            Rouleau stratifié :<span class="badge badge-info">{{ Details.stratifie_rouleau }}</span>
                         </p>
                     </div>
-                    <div class="row">
-                        <p class="col-3">
-                            Unité de cmd : {{ Details.unite_commande }}
-                        </p>
-                        <p class="col-3">
-                            Transfo 35W : {{ Details.transfo_35w }}
-                        </p>
-                        <p class="col-3">
-                            Transfo 75W : {{ Details.transfo_75w }}
-                        </p>
-                        <p class="col-3">
-                            Transfo 100W : {{ Details.transfo_100w }}
-                        </p>
+                    <hr>
+                    <div class="row ">
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+                                <p class="col-3">
+                                    Limon L18 :<span class="badge badge-info">{{ Details.profile_limon_l18 }}</span> 
+                                </p>
+                                <p class="col-3">
+                                    Limon L28 :<span class="badge badge-info">{{ Details.profile_limon_l28 }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Limon L80 :<span class="badge badge-info">{{ Details.profile_limon_l80 }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Limon L120 :<span class="badge badge-info">{{ Details.profile_limon_l120 }}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+                                <p class="col-3">
+                                    Limon U58 :<span class="badge badge-info">{{ Details.profile_limon_u58 }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Limon U65 :<span class="badge badge-info">{{ Details.profile_limon_u65 }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Limon U75 :<span class="badge badge-info">{{ Details.profile_limon_u75 }}</span>
+                                </p>
+                                <p class="col-3">
+                                    Limon U85 :<span class="badge badge-info">{{ Details.profile_limon_u85 }}</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <hr>
-                <div class="row justify-content-center">
-                    <p class="col-8">
-                        Rouleau stratifié : {{ Details.stratifie_rouleau }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row container">
-                    <div class="row">
-                        <p class="col-3">
-                            Limon L18 : {{ Details.profile_limon_l18 }}
-                        </p>
-                        <p class="col-3">
-                            Limon L28 : {{ Details.profile_limon_l28 }}
-                        </p>
-                        <p class="col-3">
-                            Limon L80 : {{ Details.profile_limon_l80 }}
-                        </p>
-                        <p class="col-3">
-                            Limon L120 : {{ Details.profile_limon_l120 }}
-                        </p>
-                    </div>
-                    <div class="row">
-                        <p class="col-3">
-                            Limon U58 : {{ Details.profile_limon_u58 }}
-                        </p>
-                        <p class="col-3">
-                            Limon U65 : {{ Details.profile_limon_u65 }}
-                        </p>
-                        <p class="col-3">
-                            Limon U75 : {{ Details.profile_limon_u75 }}
-                        </p>
-                        <p class="col-3">
-                            Limon U85 : {{ Details.profile_limon_u85 }}
-                        </p>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-4">
-                        Parquet : {{ Details.metrage_parquet }}
-                    </p>
-                    <p class="col-4">
-                        Parquet dalle : {{ Details.metrage_parquet_dalle }}
-                    </p>
-                    <p class="col-4">
-                        Décors dalle : {{ Details.decor_parquet_dalle }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-4">
-                        Parquet : {{ Details.metrage_parquet }}
-                    </p>
-                    <p class="col-4">
-                        Parquet dalle : {{ Details.metrage_parquet_dalle }}
-                    </p>
-                    <p class="col-4">
-                        Décors dalle : {{ Details.decor_parquet_dalle }}
-                    </p>
-                </div>
-                <div class="row container">
+                    <hr>
                     <div class="row">
                         <p class="col-4">
-                            Droit 58mm : {{ Details.droit_58mm }}
+                            Parquet : <span class='badge badge-info'>{{ Details.metrage_parquet }}</span>
                         </p>
                         <p class="col-4">
-                            Droit 80mm : {{ Details.droit_80mm }}
+                            Parquet dalle : <span class='badge badge-info'>{{ Details.metrage_parquet_dalle }}</span>
                         </p>
                         <p class="col-4">
-                            Droit blanc 80mm : {{ Details.droit_blanc_80mm }}
+                            Décors dalle : <span class='badge badge-info'>{{ Details.decor_parquet_dalle }}</span>
                         </p>
                     </div>
+                    <hr>
                     <div class="row">
-                        <p class="col-6">
-                            Profilé 40mm : {{ Details.profile_40mm }}
+                        <div class="col-12">
+                            <div class="row">
+                                <p class="col-4">
+                                    Droit 58mm :<span class='badge badge-info'>{{ Details.droit_58mm }}</span>
+                                </p>
+                                <p class="col-4">
+                                    Droit 80mm :<span class='badge badge-info'>{{ Details.droit_80mm }}</span>
+                                </p>
+                                <p class="col-4">
+                                    Droit blanc 80mm :<span class='badge badge-info'>{{ Details.droit_blanc_80mm }}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <p class="col-4">
+                                    Profilé 40mm : <span class='badge badge-info'>{{ Details.profile_40mm }}</span>
+                                </p>
+                                <p class="col-4">
+                                    Profilé 80mm : <span class='badge badge-info'>{{ Details.profile_58mm }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <p class="col-4">
+                            Angle ext. : <span class='badge badge-info'>{{ Details.angles_exterieurs }}</span>
                         </p>
-                        <p class="col-6">
-                            Profilé 80mm : {{ Details.profile_58mm }}
+                        <p class="col-4">
+                            Angle int. : <span class='badge badge-info'>{{ Details.angles_interieurs }}</span>
+                        </p>
+                        <p class="col-4">
+                            Module de fin : <span class='badge badge-info'>{{ Details.nombre_module_fin }}</span>
                         </p>
                     </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-4">
-                        Angle ext. : {{ Details.angles_exterieurs }}
-                    </p>
-                    <p class="col-4">
-                        Angle int. : {{ Details.angles_interieurs }}
-                    </p>
-                    <p class="col-4">
-                        Module de fin : {{ Details.nombre_module_fin }}
-                    </p>
-                </div>
-                <hr>
-                <div class="row">
-                    <p class="col-4">
-                        Rouleau isolation phon. : {{ Details.rouleau }}
-                    </p>
-                    <p class="col-4">
-                        Rouleau étanche : {{ Details.rouleau_etange }}
-                    </p>
-                    <p class="col-4">
-                        Panneau isolation phon. : {{ Details.panneau }}
-                    </p>
+                    <hr>
+                    <div class="row">
+                        <p class="col-4">
+                            Rouleau isolation phon. : <span class='badge badge-info'>{{ Details.rouleau }}</span>
+                        </p>
+                        <p class="col-4">
+                            Rouleau étanche : <span class='badge badge-info'>{{ Details.rouleau_etange }}</span>
+                        </p>
+                        <p class="col-4">
+                            Panneau isolation phon. : <span class='badge badge-info'>{{ Details.panneau }}</span>
+                        </p>
+                    </div>
                 </div>
             </fieldset>
+
             <!-- Marche ronde -->
-            <fieldset class="container">
-                <legend class="row">Marches Ronde</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ MarcheRonde.number }}
-                    </p>
-                    <p class="col-6">
-                        Taille : {{ MarcheRonde.taille }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Marches Ronde</legend>
+                <div class="col-12">
+                    {% for marcheRonde in MarcheRonde %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if marcheRonde.number > 0 %}
+                                Nombre : <span class="badge badge-info">{{ marcheRonde.number }}</span>
+                            {% else %}
+                                <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if marcheRonde.taille != 'Non renseigné' %}
+                                Taille : <span class="badge badge-info">{{ marcheRonde.taille }}</span>
+                            {% else %}
+                                Taille : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Limon int. -->
-            <fieldset class="container">
-                <legend class="row">Limon Intérieur</legend>
-                <div class="row">
-                    <p class="col-4">
-                        Nombre : {{ LimonInt.length }}
-                    </p>
-                    <p class="col-4">
-                        PDL : {{ LimonInt.pdl }}
-                    </p>
-                    <p class="col-4">
-                        Orientation : {{ LimonInt.orientation }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Limon Intérieur</legend>
+                <div class="col-12">
+                    {% for limonInt in LimonInt %}
+                    <div class="row">
+                        <p class="col-4">
+                            {% if limonInt.length != 0 %}
+                                Nombre : <span class="badge badge-info">{{ limonInt.length }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-4">
+                            {% if limonInt.pdl != 0 %}
+                                PDL : <span class="badge badge-info">{{ limonInt.pdl }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-4">
+                            {% if limonInt.orientation != 0 %}
+                                Orientation : <span class="badge badge-info">{{ limonInt.orientation }}</span>
+                            {% else %}
+                                Orientation : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Limon ext. -->
-            <fieldset class="container">
-                <legend class="row">Limon Extérieur</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ LimonExt.number }}
-                    </p>
-                    <p class="col-6">
-                        PDL : {{ LimonExt.pdl }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Limon Extérieur</legend>
+                <div class="col-12">
+                    {% for limonExt in LimonExt %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if limonExt.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ limonExt.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if limonExt.pdl %}
+                                PDL : <span class="badge badge-info">{{ limonExt.pdl }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Habillage Dessus -->
-            <fieldset class="container">
-                <legend class="row">Habillage Dessus</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ HabillageDessus.number }}
-                    </p>
-                    <p class="col-6">
-                        PDL : {{ HabillageDessus.pdl }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Habillage Dessus</legend>
+                <div class="col-12">
+                    {% for habillageDessus in HabillageDessus %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if habillageDessus.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ habillageDessus.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if habillageDessus.pdl %}
+                                PDL : <span class="badge badge-info">{{ habillageDessus.pdl }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
                 </div>
+                {% endfor %}
             </fieldset>
             <!-- Decoupe nez de marche -->
-            <fieldset class="container">
-                <legend class="row">Découpe nez de marche</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ DecoupeNez.number }}
-                    </p>
-                    <p class="col-6">
-                        PDL : {{ DecoupeNez.pdl }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Découpe nez de marche</legend>
+                <div class="col-12">
+                    {% for decoupeNez in DecoupeNez %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if decoupeNez.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ decoupeNez.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if decoupeNez.pdl %}
+                                PDL : <span class="badge badge-info">{{ decoupeNez.pdl }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Pose parquet -->
-            <fieldset class="container">
-                <legend class="row">Pose parquet</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ PoseParquet.number }}
-                    </p>
-                    <p class="col-6">
-                        PDL : {{ PoseParquet.pdl }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Pose parquet</legend>
+                <div class="col-12">
+                    {% for poseParquet in PoseParquet %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if poseParquet.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ poseParquet.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if poseParquet.pdl %}
+                                PDL : <span class="badge badge-info">{{ poseParquet.pdl }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Balustrade -->
-            <fieldset class="container">
-                <legend class="row">Balustrade</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ Balustrade.number }}
-                    </p>
-                    <p class="col-6">
-                        PDL : {{ Balustrade.pdl }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Balustrade</legend>
+                <div class="col-12">
+                    {% for balustrade in Balustrade %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if balustrade.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ balustrade.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if balustrade.pdl %}
+                                PDL : <span class="badge badge-info">{{ balustrade.pdl }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Création de contremarche -->
-            <fieldset class="container">
-                <legend class="row">Création de contremarche</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ CreationContremarche.number }}
-                    </p>
-                    <p class="col-6">
-                        PDL : {{ CreationContremarche.pdl }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Création de contremarche</legend>
+                <div class="col-12">
+                    {% for creationContremarche in CreationContremarche %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if creationContremarche.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ creationContremarche.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if creationContremarche.pdl %}
+                                PDL : <span class="badge badge-info">{{ creationContremarche.pdl }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Dépose ancien revêtement -->
-            <fieldset class="container">
-                <legend class="row">Dépose ancien revêtement</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ DeposeAncienRevet.number }}
-                    </p>
-                    <p class="col-6">
-                        PDL : {{ DeposeAncienRevet.pdl }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Dépose ancien revêtement</legend>
+                <div class="col-12">
+                    {% for deposeAncienRevet in DeposeAncienRevet %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if deposeAncienRevet.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ deposeAncienRevet.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if deposeAncienRevet.pdl %}
+                                PDL : <span class="badge badge-info">{{ deposeAncienRevet.pdl }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Habillage limon -->
-            <fieldset class="container">
-                <legend class="row">Habillage Limon</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ HabillageLimon.number }}
-                    </p>
-                    <p class="col-6">
-                        Décor : {{ HabillageLimon.decor }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Habillage Limon</legend>
+                <div class="col-12">
+                    {% for habillageLimon in HabillageLimon %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if habillageLimon.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ habillageLimon.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if habillageLimon.decor %}
+                                PDL : <span class="badge badge-info">{{ habillageLimon.decor }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
             <!-- Panneau palier -->
-            <fieldset class="container">
-                <legend class="row">Panneaux palier</legend>
-                <div class="row">
-                    <p class="col-6">
-                        Nombre : {{ PanneauPalier.number }}
-                    </p>
-                    <p class="col-6">
-                        Taille : {{ PanneauPalier.taille }}
-                    </p>
+            <fieldset class="row">
+                <legend class="col-auto">Panneaux palier</legend>
+                <div class="col-12">
+                    {% for panneauPalier in PanneauPalier %}
+                    <div class="row">
+                        <p class="col-6">
+                            {% if panneauPalier.number != 0 %}
+                                Nombre : <span class="badge badge-info">{{ panneauPalier.number }}</span>
+                            {% else %}
+                                Nombre : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                        <p class="col-6">
+                            {% if panneauPalier.taille %}
+                                PDL : <span class="badge badge-info">{{ panneauPalier.taille }}</span>
+                            {% else %}
+                                PDL : <span class="badge badge-warning">Non renseigné</span>
+                            {% endif%}
+                        </p>
+                    </div>
+                    {% endfor %}
                 </div>
             </fieldset>
+            </div>
+            
         </main>
     </body>
 </html>

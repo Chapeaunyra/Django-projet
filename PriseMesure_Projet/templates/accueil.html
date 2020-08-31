@@ -7,33 +7,62 @@
         <title>Accueil</title>
         <!-- Liens externes -->
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
-    
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        
         <!-- Liens interne -->
-        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/form.css' %}" />
+        <link rel="icon" type="image/png" href="{% static 'images/home.png' %}" />
+         <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/reset.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/accueil.css' %}" />
     </head>
     <body>
-        <header>
-            <div>
-                <h1>Accueil</h1>
+        <header class="container-fluid bg-dark">
+            <div class="row bg-dark">
+                <h1 class="h1 text-light col-12">Accueil</h1>
             </div>
         </header>
-        <main>
-            <button><a href="PriseMesure/">Etablissement devis</a></button>
-            <br>
-            <button><a href="ListeClient/">Liste client</a></button>
-    
+        
+        <main class="container" style="border-left: black solid 1px;border-right: black solid 1px;">
+            <!-- Buttons -->
+            <div class="row justify-content-center">
+                <a href="PriseMesure/" class="col-10">
+                    <button class="btn btn-info col-12">Etablissement Devis</button>
+                </a>
+            </div>
+            <div class="row justify-content-center">
+                <a href="ListeClient/" class="col-10">
+                    <button class="btn btn-info col-12">Liste client</button>
+                </a>
+            </div>
+            </div>
             <hr>
             <!-- Calendar -->
-            <div class="container-fluid" id="calendar">
-                <iframe src="https://calendar.google.com/calendar/embed?height=400&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=Europe%2FParis&amp;src=dmFsZW50aW4ubG91c3RoQGdtYWlsLmNvbQ&amp;src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;src=bTdoajRpMjVtOWNoczN2dXJjMjN0bGliaGNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;src=Nzl1bGRtNHVnYzN2OWxyYWI0ZjRhZXI4ZXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;src=ZnIuZnJlbmNoI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%23616161&amp;color=%237986CB&amp;color=%23D50000&amp;color=%23F6BF26&amp;color=%23009688" class="img-fluid" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            <div class="row justify-content-center" id="calendar">
+                <iframe src="https://calendar.google.com/calendar/embed?height=400&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=Europe%2FParis&amp;src=dmFsZW50aW4ubG91c3RoQGdtYWlsLmNvbQ&amp;src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;src=bTdoajRpMjVtOWNoczN2dXJjMjN0bGliaGNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;src=Nzl1bGRtNHVnYzN2OWxyYWI0ZjRhZXI4ZXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;src=ZnIuZnJlbmNoI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%23616161&amp;color=%237986CB&amp;color=%23D50000&amp;color=%23F6BF26&amp;color=%23009688" class="col-12" width="800" height="600" frameborder="0" scrolling="no"></iframe>
             </div>
-            
-            <footer>
-                <ul>
-                    <li><a href="#">Website</a></li>
-                    <li><a href="#">E-commerce</a></li>
-                    <li><a href="#">Documents</a></li>
+            <hr>
+            <!-- Recap Links -->
+            <footer class="container">
+                <ul class="row justify-content-center">
+                    <li class="col-4">
+                        <a href="http://www.styl-stair.be">
+                            <button class="btn btn-light">Website</button>
+                        </a>
+                    </li>
+                    <li class="col-4">
+                        <a href="https://www.stylstair.shop/">
+                            <button class="btn btn-light">E-commerce</button>
+                        </a>
+                    </li>
+                    <!-- <li class="col-4">
+                        <a href="#">
+                            <button class="btn btn-light">Documents</button>
+                        </a>
+                    </li> -->
                 </ul>
             </footer>
         </main>

@@ -8,12 +8,14 @@
 
         <!-- Liens externes -->
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
-    
+
+        
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         
+    
         <!-- Liens interne -->
         <link rel="icon" type="image/png" href="{% static 'images/home.png' %}" />
         <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
@@ -27,7 +29,7 @@
                     <h1 class="h1 text-light col-10">Prise de mesure</h1>
                 </div>
                 <div class="col-2">
-                    <a href="/" class="badge badge-pill badge-info">
+                    <a href="/ListeClient" class="badge badge-pill badge-info">
                         <button class="btn btn-info">
                             Retour
                         </button>
@@ -45,7 +47,7 @@
                 <button class="tablinks btn btn-dark col-3" onclick="openCity(event, 'Mesures')">Mesures</button>
             </div>
     
-            <form action="/NouveauDevis/" method="post"> {% csrf_token %}
+            <form action="/ModifierDevis/{{ Client.id }}/" method="post"> {% csrf_token %}
                 <!-- Onglet 1 -->
                 <div id="Marches" class="tabcontent container">
                     <!-- Données Clientes -->
@@ -53,25 +55,60 @@
                         <legend class="col-auto">Informations client</legend>
 
                         <div class="container">
-                            <div class="row justify-content-between">
-                                <input class="form-control col-6" type="text" name="name" id="name" class="col-5 text-center" placeholder="Nom" required>
-                                <input class="form-control col-5" type="text" name="firstname" id="firstname" class="col-5 text-center" placeholder="Prénom" required>
+                            <div class="row">
+                                <p class="col-auto p-inline">
+                                    {% if Client.Street_number %}
+                                        {{ Client.Street_number }}
+                                    {% else %}
+                                        <span class='badge badge-danger'>N° Inconnu</span>
+                                    {% endif %}
+                                </p>
+                                <p class="col-auto p-inline">
+                                    {% if Client.Street %}
+                                        {{ Client.Street }},
+                                    {% else %}
+                                        <span class='badge badge-danger'>Rue inconnu</span>,
+                                    {% endif %}
+                                </p>
+                                <p class="col-auto p-inline">
+                                    {% if Client.Postal_code %}
+                                        {{ Client.Postal_code }},
+                                    {% else %}
+                                        <span class='badge badge-danger'>Code postal inconnu</span>,
+                                    {% endif %}
+                                </p>
+                                <p class="col-auto p-inline">
+                                    {% if Client.City %}
+                                        {{ Client.City }},
+                                    {% else %}
+                                        <span class='badge badge-danger'>Ville non renseigné</span>,
+                                    {% endif %}
+                                </p>
                             </div>
-                            <div class="row justify-content-between">
-                                <input class="form-control col-6" type="tel" name="phone" id="phone" class="col-5 text-center" placeholder="Fixe">
-                                <input class="form-control col-5" type="tel" name="smartphone" id="smartphone" class="col-5 text-center" placeholder="Portable">
+                            <div class="row">
+                                <p class="col-4">
+                                    {% if Client.Phone %}
+                                        <img src="{% static 'images/phone.svg' %}" alt="Phone" width="25px"> {{ Client.Phone }}
+                                    {% else %}
+                                    <span class='badge badge-danger'>Non renseigné</span>
+                                    {% endif %}
+                                </p>
+                                <p class="col-4">
+                                    {% if Client.Smartphone %}
+                                        <img src="{% static 'images/smartphone.svg' %}" alt="Phone" width="15px"> {{ Client.Smartphone }}
+                                    {% else %}
+                                        <span class='badge badge-danger'>Non renseigné</span>
+                                    {% endif %}
+                                </p>
                             </div>
-                            <div class="row justify-content-between">
-                                <input class="form-control col-2" type="text" name="street_number" id="street_number" class="col-5 text-center" placeholder="n°">
-                                <input class="form-control col-9" type="text" name="street" id="street" class="col-5 text-center" placeholder="Rue">
-                            </div>
-                            <div class="row justify-content-between">
-                                <input class="form-control col-6" type="text" name="city" id="city" class="col-5 text-center" placeholder="Ville">
-                                <input class="form-control col-5" type="text" name="postal_code" id="postal_code" class="col-5 text-center" placeholder="Code postal">
-                            </div>
-                            <div class="row justify-content-start">
-                                <input class="form-control col-12" type="email" name="email" id="email" placeholder="Adresse mail">
-                                <p class="col-2"></p>
+                            <div class="row">
+                                <p class="col-6">
+                                    {% if Client.Email %}
+                                        {{ Client.Email }}
+                                    {% else %}
+                                        {{ "<span class='badge badge-danger'>Non renseigné</span>" }}
+                                    {% endif %}
+                                </p>
                             </div>
                         </div>
                         
@@ -83,13 +120,45 @@
                     <fieldset class="row">
                         <legend class="col-auto">Adresse chantier</legend>
                         <div class="container">
+                            <div class="row">
+                                <p class="col-auto p-inline">
+                                    {% if Client.Street_number_site %}
+                                        {{ Client.Street_number_site }}
+                                    {% else %}
+                                        <span class='badge badge-danger'>Non renseigné</span>
+                                    {% endif %}
+                                </p>
+                                <p class="col-auto p-inline">
+                                    {% if Client.Street_site %}
+                                        {{ Client.Street_site }},
+                                    {% else %}
+                                        <span class='badge badge-danger'>?</span>,
+                                    {% endif %}
+                                </p>
+                                <p class="col-auto p-inline">
+                                    {% if Client.Postal_code_site %}
+                                        {{ Client.Postal_code_site }},
+                                    {% else %}
+                                        <span class='badge badge-danger'>?</span>,
+                                    {% endif %}
+                                </p>
+                                <p class="col-auto p-inline">
+                                    {% if Client.City_site %}
+                                        {{ Client.City_site }},
+                                    {% else %}
+                                        {<span class='badge badge-danger'>Ville non renseigné</span>,
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="container">
                             <div class="row justify-content-between">
                                 <input class="form-control col-2" type="text" name="street_number_site" id="street_number_site" class="col-5 text-center" placeholder="n°">
                                 <input class="form-control col-9" type="text" name="street_site" id="street_site" class="col-5 text-center" placeholder="Rue">
                             </div>
                             <div class="row justify-content-between">
-                                <input class="form-control col-6" type="text" name="city_site" id="city_site" class="col-5 text-center" placeholder="Ville">
                                 <input class="form-control col-5" type="text" name="postal_code_site" id="postal_code_site" class="col-5 text-center" placeholder="Code postal">
+                                <input class="form-control col-6" type="text" name="city_site" id="city_site" class="col-5 text-center" placeholder="Ville">
                             </div>
                         </div>
 
@@ -101,20 +170,42 @@
                         <legend class="col-auto">Notes</legend>
                         <div class="container">
                             <div class="row justify-content-center">
+                                 <p>
+                                    {{ Details.commentaire }}
+                                </p>
+                            </div>
+                            <div class="row justify-content-center">
                                 <textarea name="commentaire" id="commentaire" class="form-control col-10" placeholder="Vos notes, commentaires utiles pour le projet" style="min-height: 200px;margin-bottom: 1em;"></textarea>
                             </div>
                         <div class="row justify-content-center">
-                            <input class="col-auto form-control-file" type="file" name="imagesClient" id="imagesClient" class="" accept="image/png, image/jpeg, image/jpg" multiple style="margin-bottom: 1em;"">
+                            <!-- 
+
+                            <div class="row justify-content-center">
+                                {% for photo in Photos %}
+                                    <img class="col-4 img-fluid">
+                                {% endfor %}
+                            </div>
+
+                             -->
+                             <div class="row justify-content-center">
+                                <input class="col-auto form-control-file" type="file" name="imagesClient" id="imagesClient" class="" accept="image/png, image/jpeg, image/jpg" multiple style="margin-bottom: 1em;"">
+                            </div>
                         </div>
                         </div>
                         
                         
                     </fieldset>
-    
+                    
                     <!-- Données marches -->
                     <fieldset class="row">
                         <legend class="col-auto">Marches</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                <p>
+                                    {{ Details.nombre_marches }} marches en {{ Details.decor_marches }}.
+                                </p>
+                            </div>
+
                             <div class="row justify-content-center">
                                 <input class="form-control col-4" type="number" name="nombreMarche" id="nombreMarche" class="" placeholder="Nombre" value=0>
                                 <select class="col-4"name="decorMarche" id="decorMarche">
@@ -132,11 +223,16 @@
                         <legend class="col-auto">Contremarches</legend>
                         <div class="container">
                             <div class="row justify-content-center">
+                                <p>
+                                    {{ Details.nombre_contremarches }} contremarches en {{ Details.decor_contremarches }}.
+                                </p>
+                            </div>
+                            <div class="row justify-content-center">
                                 <input class="form-control col-4 justify-content-center" type="number" name="nombreContremarche" id="nombreContremarche" class="" placeholder="Nombre" value=0>
                                 <select class="col-4"name="decorContremarche" id="decorContremarche">
                                     <option selected disabled>Décors</option>
                                     {% for Decors in DecorsContremarche %}
-                                    <option value="{{ Decors.name }}" name="{{ Decors.name }}">{{ Decors.name }}</option>
+                                    <option value="{{ Decors.name }}">{{ Decors.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -147,6 +243,11 @@
                     <fieldset class="row">
                         <legend class="col-auto">Profilé Aluminium</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                <p>
+                                    {{ Details.nombre_profile_alu }} profilés aluminium en {{ Details.type_profile_alu }}.
+                                </p>
+                            </div>
                             <div class="row justify-content-center">
                                 <input class="form-control col-4" type="number" name="nombreProfile" id="nombreProfile" class="" placeholder="Nombre" value=0>
                                 <select class="col-4"name="typeProfile" id="typeProfile">
@@ -164,6 +265,11 @@
                         <legend class="col-auto">Plinthes</legend>
                         <div class="container">
                             <div class="row justify-content-center">
+                                <p>
+                                    {{ Details.nombre_plinthes }} plinthes en {{ Details.taille_plinthes }}.
+                                </p>
+                            </div>
+                            <div class="row justify-content-center">
                                 <input class="form-control col-4" type="number" name="nombrePlinthe" id="nombrePlinthe" class="" placeholder="Nombre" value=0>
                                 <select class="col-4"name="taillePlinthe" id="taillePlinthe">
                                     <option selected disabled>Tailles</option>
@@ -179,6 +285,11 @@
                     <fieldset class="row">
                         <legend class="col-auto">Barre de seuil</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                <p>
+                                    {{ Details.nombre_barres_seuil }} barre de seuil en {{ Details.couleur_barres_seuil }} de {{ Details.type_barres_seuil }}.
+                                </p>
+                            </div>
                             <div class="row justify-content-center">
                                 <input class="form-control col-4" type="number" name="nombreBarreSeuil" id="nombreBarreSeuil" class="" placeholder="Nombre" value=0>
                                 <select class="col-4"name="typeBarreSeuil" id="typeBarreSeuil">
@@ -201,6 +312,11 @@
                     <fieldset class="row">
                         <legend class="col-auto">Marche palière</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                <p>
+                                    {{ Details.nombre_marches_paliere }} marches palières en {{ Details.type_marches_paliere }} de {{ Details.taille_marches_paliere }}.
+                                </p>
+                            </div>
                             <div class="row justify-content-center">
                                 <input class="form-control col-4" type="number" name="nombreMarchePaliere" id="nombreMarchePaliere" class="" placeholder="Nombre" value=0>
                                 <select class="col-4"name="typeMarchePaliere" id="typeMarchePaliere">
@@ -225,6 +341,11 @@
                     <!-- Données Marches Eclairees -->
                     <fieldset class="container">
                         <legend class="col-auto">Lumières</legend>
+                        <div class="row justify-content-center">
+                            <p>
+                               {{ Details.marche_Eclairee }} marches éclairées pour {{ Details.marche_Non_Eclairee }} marches non éclairées.
+                           </p>
+                       </div>
 
                         <div class="row justify-content-between">
                             <div class="input-group col-6">
@@ -251,12 +372,21 @@
                     <!-- Données Matériels Electriques -->
                     <fieldset class="container">
                         <legend class="col-auto">Matériel Electrique</legend>
+                        <div class="row justify-content-center">
+                            <p class="col-4"> {{ Details.interrupteur }} interrupteurs. </p>
+                            <p class="col-4"> {{ Details.detecteur }} détecteurs. </p>
+                            <p class="col-4"> {{ Details.unite_commande }} unités de commande. </p>
+                            <p class="col-4"> {{ Details.transfo_35w }} transfo 35W. </p>
+                            <p class="col-4"> {{ Details.transfo_75w }} transfo 75W. </p>
+                            <p class="col-4"> {{ Details.transfo_100w }} transfo 100W. </p>
+                            <p class="col-4"> {{ Details.hauteur_limon_verifier }} hauteur des limons vérifiées </p>
+                       </div>
                         <div class="row justify-content-between">
                             <div class="input-group col-6">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroupPrepend">Interrupteurs</span>
                                 </div>
-                                <input class="form-control" type="number" name="nombreInterrupteur" id="nombreInterrupteur" class="" placeholder="Interrupteurs" value="0">
+                                <input class="form-control" type="number" name="nombreInterrupteur" id="nombreInterrupteur" placeholder="Interrupteurs" value="0">
                                 <div class="invalid-feedback">
                                   Veuillez entrer un nombre valide.
                                 </div>
@@ -316,13 +446,11 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
-                            <label for="HauteurLimonVerifier" class="col-10">Hauteurs limons vérifiées</label>
-                            <input type="checkbox" name="HauteurLimonVerifier" id="HauteurLimonVerifier" class="form-control col-2">
+                            <!-- <label for="HauteurLimonVerifier" class="col-10">Hauteurs limons vérifiées</label> -->
+                            <!-- <input type="checkbox" name="HauteurLimonVerifier" id="HauteurLimonVerifier" class="form-control col-2"> -->
                          <div class="row">
                     </fieldset>
-                    
                 </div>
     
                 <!-- Onglet 3 -->
@@ -330,6 +458,20 @@
                     <!-- Données marches rondes -->
                     <fieldset class="container" id="MarcheRonde">
                         <legend class="col-auto">Marches rondes</legend>
+                        
+                        <div class="row justify-content-center">
+                            {% for mr in MarcheRonde %}
+                            <p class="col-4">
+                                Nombre : {{ mr.number }}
+                            </p>
+                            <p class="col-4">
+                                Taille : {{ mr.taille }}
+                            </p>
+                            <a class="btn btn-danger col-4" href="/DeleteMarcheRonde/{{ Client.id }}/{{ mr.id }}">
+                                Supprimer
+                            </a>
+                            {% endfor %}
+                       </div>
 
                         <div id="ligneMarcheRonde0" class="container">
                             <div class="row justify-content-start">
@@ -346,36 +488,62 @@
                     <!-- Données limon intérieur -->
                     <fieldset class="container" id="LimonInterieur">
                         <legend class="col-auto">Limon intérieur</legend>
-                        <div class="container">
-                            <div class="input-group row" id="ligneLimonInterieur0">
-                                <input class="form-control" type="text" name="longueurLimonInterieur0" id="longueurLimonInterieur0" class="" placeholder="Longueur">
-                                <input class="form-control" type="text" name="PdlLimonInterieur0" id="PdlLimonInterieur0" class="" placeholder="PDL / PU">
-                                <div class="input-group-append input-group-text">
-                                    <span class="" for="coteGaucheLimonInterieur0">Gauche</span>&nbsp;
-                                    <input class="input-group-text" type="radio" name="coteLimonInterieur0" id="coteGaucheLimonInterieur0" class="" value="False">&nbsp;
-                                    <span class="" for="coteDroitLimonInterieur0">Droit</span>&nbsp;
-                                    <input class="input-group-text" type="radio" name="coteLimonInterieur0" id="coteDroitLimonInterieur0" class="" value="True">
-                                </div>
-                            </div>
-                            <div id="blocButtonLimonInterieur" class="row">
-                                <button onclick="ajoutLigne('LimonInterieur')" type="button" id="buttonLimonInterieur" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalLimonInterieur" id="totalLimonInterieur" class="" hidden value="0">
+                        <div class="row justify-content-center">
+                            {% for li in LimonInt %}
+                            <p class="col-3">
+                                Longueur : {{ li.length }}
+                            </p>
+                            <p class="col-3">
+                                Pdl/PU : {{ li.pdl }}
+                            </p>
+                            <p class="col-3">
+                                Orientation : {{ li.orientation }}
+                            </p>
+                            <a class="btn btn-danger col-3" href="/DeleteLimonInterieur/{{ Client.id }}/{{ li.id }}">
+                                Supprimer
+                            </a>
+                            {% endfor %}
+                       </div>
+                        <div class="input-group row" id="ligneLimonInterieur0">
+                            <input class="form-control" type="text" name="longueurLimonInterieur0" id="longueurLimonInterieur0" class="" placeholder="Longueur">
+                            <input class="form-control" type="text" name="PdlLimonInterieur0" id="PdlLimonInterieur0" class="" placeholder="PDL / PU">
+                            <div class="input-group-append input-group-text">
+                                <span class="" for="coteGaucheLimonInterieur0">Gauche</span>&nbsp;
+                                <input class="input-group-text" type="radio" name="coteLimonInterieur0" id="coteGaucheLimonInterieur0" value="Gauche">&nbsp;
+                                <span class="" for="coteDroitLimonInterieur0">Droite</span>&nbsp;
+                                <input class="input-group-text" type="radio" name="coteLimonInterieur0" id="coteDroitLimonInterieur0" value="Droite">
                             </div>
                         </div>
-                        
+                        <div id="blocButtonLimonInterieur" class="row">
+                            <button onclick="ajoutLigne('LimonInterieur')" type="button" id="buttonLimonInterieur" class="btn btn-light">+</button>
+                            <input class="form-control col-4" type="number" name="totalLimonInterieur" id="totalLimonInterieur" class="" hidden value="0">
+                        </div>
                     </fieldset>
                     
                     <!-- Données limon extérieur -->
                     <fieldset class="container" id="LimonExterieur"> 
                         <legend class="col-auto">Limon extérieur</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                {% for le in LimonExt %}
+                                <p class="col-4">
+                                    Nombre : {{ le.number }}
+                                </p>
+                                <p class="col-4">
+                                    Pdl/PU : {{ le.pdl }}
+                                </p>
+                                <a class="btn btn-danger col-4" href="/DeleteLimonExterieur/{{ Client.id }}/{{ le.id }}">
+                                    Supprimer
+                                </a>
+                                {% endfor %}
+                            </div>
                             <div id="ligneLimonExterieur0" class="row">
                                 <input class="form-control col-4" type="number" name="nombreLimonExterieur0" id="nombreLimonExterieur0" class="" placeholder="Quantité" value=0>
                                 <input class="form-control col-4" type="text" name="PdlLimonExterieur0" id="PdlLimonExterieur0" class="" placeholder="PDL / PU">
                             </div>
                             <div id="blocButtonLimonExterieur" class="row">
                                 <button type="button" id="buttonLimonExterieur" onclick="ajoutLigne('LimonExterieur')" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalLimonExterieur" id="totalLimonExterieur" class="" hidden value=0>
+                                <input class="form-control col-4" type="number" name="totalLimonExterieur" id="totalLimonExterieur" class="" hidden value="0">
                             </div>
                         </div>
                     </fieldset>
@@ -384,6 +552,19 @@
                     <fieldset class="container" id="HabillageDessus">
                         <legend class="col-auto">Habillage dessus</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                {% for hd in HabillageDessus %}
+                                <p class="col-4">
+                                    Nombre : {{ hd.number }}
+                                </p>
+                                <p class="col-4">
+                                    PDL/PU : {{ hd.pdl }}
+                                </p>
+                                <a class="btn btn-danger col-4" href="/DeleteHabillageDessus/{{ Client.id }}/{{ hd.id }}">
+                                    Supprimer
+                                </a>
+                                {% endfor %}
+                            </div>
                             <div class="row">
                                 <input class="form-control col-4" type="number" name="nombreHabillageDessus0" id="nombreHabillageDessus0" class="" placeholder="Quantité" value=0>
                                 <input class="form-control col-4" type="text" name="PdlHabillageDessus0" id="PdlHabillageDessus0" class="" placeholder="PDL / PU">
@@ -395,10 +576,22 @@
                         </div>
                     </fieldset>
                     
-                    
                     <!-- Données decoupe nez de marche -->
                     <fieldset class="container" id="DecoupeNezMarche">
                         <legend class="col-auto">Découpe nez de marche</legend>
+                        <div class="row justify-content-center">
+                            {% for dn in DecoupeNez %}
+                            <p class="col-4">
+                                Nombre : {{ dn.number }}
+                            </p>
+                            <p class="col-4">
+                                PDL/PU : {{ dn.pdl }}
+                            </p>
+                            <a class="btn btn-danger col-4" href="/DeleteDecoupeNezMarche/{{ Client.id }}/{{ dn.id }}">
+                                Supprimer
+                            </a>
+                            {% endfor %}
+                        </div>
                         <div class="container">
                             <div id="ligneDecoupeNezMarche0" class="row">
                                 <input class="form-control col-4" type="number" name="nombreDecoupeNezMarche0" id="nombreDecoupeNezMarche0" class="" placeholder="Quantité" value=0>
@@ -406,7 +599,7 @@
                             </div>
                             <div id="blocButtonDecoupeNezMarche" class="row">
                                 <button type="button" id="buttonDecoupeNezMarche" onclick="ajoutLigne('DecoupeNezMarche');" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalDecoupeNezMarche" id="totalDecoupeNezMarche" class="" hidden value=0>
+                                <input class="form-control col-4" type="number" name="totalDecoupeNezMarche" id="totalDecoupeNezMarche" class="" hidden value="0"">
                             </div>
                         </div>
                     </fieldset>
@@ -415,14 +608,27 @@
                     <fieldset class="container" id="PoseParquet">
                         <legend class="col-auto">Pose parquet</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                {% for pp in PoseParquet %}
+                                <p class="col-4">
+                                    Nombre : {{ pp.number }}
+                                </p>
+                                <p class="col-4">
+                                    PDL/PU : {{ pp.pdl }}
+                                </p>
+                                <a class="btn btn-danger col-4" href="/DeletePoseParquet/{{ Client.id }}/{{ pp.id }}">
+                                    Supprimer
+                                </a>
+                                {% endfor %}
+                            </div>
                             <div id="ligneDecoupeNezMarche0" class="row">
                                 <input class="form-control col-4" type="number" name="nombrePoseParquet0" id="nombrePoseParquet0" class="" placeholder="Quantité" value=0>
-                                <input class="form-control col-4" type="text" name="PdlPoseParquet0" id="PdlposeParquet0" class="" placeholder="PDL / PU">
+                                <input class="form-control col-4" type="text" name="PdlPoseParquet0" id="PdlPoseParquet0" class="" placeholder="PDL / PU">
                             </div>
 
                             <div id="blocButtonPoseParquet" class="row">
                                 <button type="button" id="buttonPoseParquet" onclick="ajoutLigne('PoseParquet');" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalPoseParquet" id="totalPoseParquet" class="" hidden value=0>
+                                <input class="form-control col-4" type="number" name="totalPoseParquet" id="totalPoseParquet" class="" hidden value="0"">
                             </div>
                         </div>
                     </fieldset>
@@ -431,13 +637,26 @@
                     <fieldset class="container" id="Balustrade">
                         <legend class="col-auto">Balustrade</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                {% for b in Balustrade %}
+                                <p class="col-4">
+                                    Nombre : {{ b.number }}
+                                </p>
+                                <p class="col-4">
+                                    PDL/PU : {{ b.pdl }}
+                                </p>
+                                <a class="btn btn-danger col-4" href="/DeleteBalustrade/{{ Client.id }}/{{ b.id }}">
+                                    Supprimer
+                                </a>
+                                {% endfor %}
+                            </div>
                             <div id="ligneBalustrade0" class="row">                            
                                 <input class="form-control col-4" type="number" name="nombreBalustrade0" id="nombreBalustrade0" class="" placeholder="Quantité" value=0>
                                 <input class="form-control col-4" type="text" name="PdlBalustrade0" id="PdlBalustrade0" class="" placeholder="PDL / PU">
                             </div>
                             <div id="blocButtonBalustrade" class="row">
                                 <button type="button" id="buttonBalustrade" onclick="ajoutLigne('Balustrade');" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalBalustrade" id="totalBalustrade" class="" hidden value=0>
+                                <input class="form-control col-4" type="number" name="totalBalustrade" id="totalBalustrade" class="" hidden value="0">
                             </div>
                         </div>
                     </fieldset>
@@ -446,13 +665,27 @@
                     <fieldset class="container" id="CreationContremarche">
                         <legend class="col-auto">Création de contremarche</legend>
                         <div class="container">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    {% for ccm in CreationContremarche %}
+                                    <p class="col-4">
+                                        Nombre : {{ ccm.number }}
+                                    </p>
+                                    <p class="col-4">
+                                        PDL/PU : {{ ccm.pdl }}
+                                    </p>
+                                    <a class="btn btn-danger col-4" href="/DeleteCreationContremarche/{{ Client.id }}/{{ ccm.id }}">
+                                        Supprimer
+                                    </a>
+                                    {% endfor %}
+                                </div>
                             <div id="ligneCreationContremarche0" class="row">
                                 <input class="form-control col-4" type="number" name="nombreCreationContremarche0" id="nombreCreationContremarche0" class="" placeholder="Quantité" value=0>
                                 <input class="form-control col-4" type="text" name="PdlCreationContremarche0" id="PdlCreationContremarche0" class="" placeholder="PDL / PU">
                             </div>
                             <div id="blocButtonCreationContremarche" class="row">
                                 <button type="button" id="buttonCreationContremarche" onclick="ajoutLigne('CreationContremarche');" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalCreationContremarche" id="totalCreationContremarche" class="" hidden value=0>
+                                <input class="form-control col-4" type="number" name="totalCreationContremarche" id="totalCreationContremarche" class="" hidden value="0">
                             </div>
                         </div>
                     </fieldset>
@@ -461,13 +694,26 @@
                     <fieldset class="container" id="DeposeAncienRevetement">
                         <legend class="col-auto">Dépose ancien revêtement</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                {% for dar in DeposeAncienRevet %}
+                                <p class="col-4">
+                                    Nombre : {{ dar.number }}
+                                </p>
+                                <p class="col-4">
+                                    PDL/PU : {{ dar.pdl }}
+                                </p>
+                                <a class="btn btn-danger col-4" href="/DeleteDeposeAncienRevetement/{{ Client.id }}/{{ dar.id }}">
+                                    Supprimer
+                                </a>
+                                {% endfor %}
+                            </div>
                             <div id="ligneDeposeAncienRevetement0" class="row">
                                 <input class="form-control col-4" type="number" name="nombreDeposeAncienRevetement0" id="nombreDeposeAncienRevetement0" class="" placeholder="Quantité" value=0>
                                 <input class="form-control col-4" type="text" name="PdlDeposeAncienRevetement0" id="PdlDeposeAncienRevetement0" class="" placeholder="PDL / PU">
                             </div>
                             <div id="blocButtonDeposeAncienRevetement" class="row">
                                 <button type="button" id="buttonDeposeAncienRevetement" onclick="ajoutLigne('DeposeAncienRevetement');" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalDeposeAncienRevetement" id="totalDeposeAncienRevetement" class="" hidden value=0>
+                                <input class="form-control col-4" type="number" name="totalDeposeAncienRevetement" id="totalDeposeAncienRevetement" class="" hidden value="0">
                             </div>
                         </div>
                     </fieldset>
@@ -476,6 +722,19 @@
                     <fieldset class="container" id="HabillageLimon">
                         <legend class="col-auto">Habillage de limons</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                {% for hl in HabillageLimon %}
+                                <p class="col-4">
+                                    Nombre : {{ hl.number }}
+                                </p>
+                                <p class="col-4">
+                                    Décor : {{ hl.decor }}
+                                </p>
+                                <a class="btn btn-danger col-4" href="/DeleteHabillageLimon/{{ Client.id }}/{{ hl.id }}">
+                                    Supprimer
+                                </a>
+                                {% endfor %}
+                            </div>
                             <div id="ligneHabillageLimon0" class="row">
                                 <input class="form-control col-4" type="number" name="nombreHabillageLimon0" id="nombreHabillageLimon0" class="" placeholder="Quantité" value=0>
                                 <select class="col-4"name="decorHabillageLimon0" id="decorHabillageLimon0">
@@ -487,7 +746,7 @@
                             </div>
                             <div id="blocButtonHabillageLimon" class="row">
                                 <button type="button" id="buttonHabillageLimon" onclick="ajoutLigne('HabillageLimon');" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalHabillageLimon" id="totalHabillageLimon" class="" hidden value=0>
+                                <input class="form-control col-4" type="number" name="totalHabillageLimon" id="totalHabillageLimon" class="" hidden value="0">
                             </div>
                         </div>
                     </fieldset>
@@ -496,6 +755,19 @@
                     <fieldset class="container" id="PanneauPalier">
                         <legend class="col-auto">Panneau Palier</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                {% for pp in PanneauPalier %}
+                                <p class="col-4">
+                                    Nombre : {{ pp.number }}
+                                </p>
+                                <p class="col-4">
+                                    PDL/PU : {{ pp.taille }}
+                                </p>
+                                <a class="btn btn-danger col-4" href="/DeletePanneauPalier/{{ Client.id }}/{{ pp.id }}">
+                                    Supprimer
+                                </a>
+                                {% endfor %}
+                            </div>
                             <div id="lignePanneauPalier0" class="row">
                                 <input class="form-control col-4" type="number" name="nombrePanneauPalier0" id="nombrePanneauPalier0" class="" placeholder="Quantité" value=0>
                                 <select class="col-4"name="taillePanneauPalier0" id="taillePanneauPalier0">
@@ -507,7 +779,7 @@
                             </div>
                             <div id="blocButtonPanneauPalier" class="row">
                                 <button type="button" id="buttonPanneauPalier" onclick="ajoutLigne('PanneauPalier');" class="btn btn-light">+</button>
-                                <input class="form-control col-4" type="number" name="totalPanneauPalier" id="totalPanneauPalier" class="" hidden value=0>
+                                <input class="form-control col-4" type="number" name="totalPanneauPalier" id="totalPanneauPalier" class="" hidden value="0">
                             </div>
                         </div>
                     </fieldset>
@@ -516,8 +788,13 @@
                     <fieldset class="container">
                         <legend class="col-auto">Stratifié rouleau</legend>
                         <div class="container">
-                            <div class="row">
-                                <input class="form-control col-4" type="text" name="metrageStratifieRouleau" id="metrageStratifieRouleau" class="" placeholder="Métrage" value=0>
+                            <div class="row justify-content-center">
+                                <p class="col-4">
+                                    Nombre : {{ Details.stratifie_rouleau }}
+                                </p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <input class="form-control col-4" type="text" name="metrageStratifieRouleau" id="metrageStratifieRouleau" class="" placeholder="Métrage" value="0">
                             </div>
                         </div>
                     </fieldset>
@@ -527,6 +804,36 @@
                         <legend class="col-auto">Profilé de dessus de limon</legend>
                         <div class="container">
                             <div class="row justify-content-between">
+                                <div class="col-12">
+                                    <div class="row justify-content-center">
+                                        <p class="col-3">
+                                            L18 : {{ Details.profile_limon_l18 }}
+                                        </p>
+                                        <p class="col-3">
+                                            L28 : {{ Details.profile_limon_l28 }}
+                                        </p>
+                                        <p class="col-3">
+                                            L80 : {{ Details.profile_limon_l80 }}
+                                        </p>
+                                        <p class="col-3">
+                                            L120 : {{ Details.profile_limon_l120 }}
+                                        </p>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <p class="col-3">
+                                            U58 : {{ Details.profile_limon_u58 }}
+                                        </p>
+                                        <p class="col-3">
+                                            U65 : {{ Details.profile_limon_u65 }}
+                                        </p>
+                                        <p class="col-3">
+                                            U75 : {{ Details.profile_limon_u75 }}
+                                        </p>
+                                        <p class="col-3">
+                                            U85 : {{ Details.profile_limon_u85 }}
+                                        </p>
+                                    </div>
+                                </div>
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text" id="inputGroupPrepend">L18</span>
@@ -616,6 +923,17 @@
                     <fieldset class="container">
                         <legend class="col-auto">Parquets</legend>
                         <div class="container">
+                            <div class="row justify-content-center">
+                                <p class="col-3">
+                                   Métrage parquet : {{ Details.metrage_parquet }}
+                                </p>
+                                <p class="col-3">
+                                    Métrage parquet dalle : {{ Details.metrage_parquet_dalle }}
+                                </p>
+                                <p class="col-3">
+                                    Décor parquet dalle : {{ Details.decor_parquet_dalle }}
+                                </p>
+                            </div>
                             <div class="row">
                                 <h4 class="col-2">Même décor</h4>
                                 <input type="text" name="metrageParquet" id="metrageParquet"placeholder="Métrage du même décor" class="form-control col-4" >
@@ -633,12 +951,42 @@
                         </div>
                         
                     </fieldset>
-                    
     
                     <!-- Données plinthes -->
                     <fieldset class="container">
                         <legend class="col-auto">Plinthes</legend>
                         <div class="row justify-content-between">
+                            <div class="col-12">
+                                <div class="row justify-content-center">
+                                    <p class="col-3">
+                                        Profilé 40 : {{ Details.profile_40mm }}
+                                    </p>
+                                    <p class="col-3">
+                                        Profilé 58 : {{ Details.profile_58mm }}
+                                    </p>
+                                    <p class="col-3">
+                                        Profilé Droit 58 : {{ Details.droit_58mm }}
+                                    </p>
+                                    <p class="col-3">
+                                        Profilé droit 80 : {{ Details.droit_80mm }}
+                                    </p>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <p class="col-3">
+                                        Profilé droit blanc 80 : {{ Details.droit_blanc_80mm }}
+                                    </p>
+                                    <p class="col-3">
+                                        Angles extérieurs : {{ Details.angles_exterieurs }}
+                                    </p>
+                                    <p class="col-3">
+                                        Angles intérieurs : {{ Details.angles_interieurs }}
+                                    </p>
+                                    <p class="col-3">
+                                        Module de fin : {{ Details.nombre_module_fin }}
+                                    </p>
+                                </div>
+                            </div>
+
                             <div class="input-group col-6">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroupPrepend">Profilé 40</span>
@@ -730,6 +1078,19 @@
                     <fieldset class="container">
                         <legend class="col-auto">Isolation Phonique</legend>
                         <div class="row justify-content-between">
+                            <div class="col-12">
+                                <div class="row justify-content-center">
+                                    <p class="col-4">
+                                        {{ Details.rouleau }} rouleaux
+                                    </p>
+                                    <p class="col-4">
+                                        {{ Details.rouleau_etange }} rouleaux étanches
+                                    </p>
+                                    <p class="col-4">
+                                        {{ Details.panneau }} isolation panneaux
+                                    </p>
+                                </div>
+                            </div>
                             <div class="input-group col-6">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="inputGroupPrepend">Rouleaux</span>
@@ -766,6 +1127,48 @@
     
                 <!-- Onglet 4 -->
                 <div id="Mesures" class="tabcontent container">
+                    <fieldset class="row">
+                        <legend class="col-auto">Mesure des marches</legend>
+                        <div class="col-12 table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Diagonale</th>
+                                    <th scope="col">Prof. G</th>
+                                    <th scope="col">Prof. D</th>
+                                    <th scope="col">Retour G</th>
+                                    <th scope="col">Retour D</th>
+                                    <th scope="col">Plinthe G</th>
+                                    <th scope="col">Plinthe D</th>
+                                    <th scope="col">Profilé Arr.</th>
+                                    <th scope="col">Suppression</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for marche in PriseMesure %}
+                                    <tr>
+                                        <th scope="row">{{ marche.type_stair }}</th>
+                                        <td>{{ marche.Diagonal }}</td>
+                                        <td>{{ marche.DepthL }}</td>
+                                        <td>{{ marche.DepthR }}</td>
+                                        <td>{{ marche.RetourG }}</td>
+                                        <td>{{ marche.RetourD }}</td>
+                                        <td>{{ marche.PlintheG }}</td>
+                                        <td>{{ marche.PlintheD }}</td>
+                                        <td>{{ marche.ProfileArriere }}</td>
+                                        <td>
+                                            <a class="btn btn-danger" href="/DeleteMesureMarche/{{ Client.id }}/{{ marche.id }}">
+                                                Supprimer
+                                            </a>
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                </tbody>
+                              </table>
+                        </div>
+                    </fieldset>
+
                     <fieldset class="row" id="Marche">
                         <legend class="col-auto">N°1</legend>
                         <div id="ligneMarche0" class="container">
@@ -798,7 +1201,7 @@
                             <div id="blocButtonMarche" class="container">
                                 <div class="row justify-content-center">
                                     <button type="button" id="buttonMarche" onclick="ajoutLigne('Marche');" class="btn btn-light col-8">+ Ajouter marche</button>
-                                    <input class="form-control col-4" type="number" name="totalMarche" id="totalMarche" class="" hidden value=0>
+                                    <input class="form-control col-4" type="number" name="totalMarche" id="totalMarche" class="" hidden value="0">
                                 </div>
                             </div>
                         </div>
@@ -809,7 +1212,7 @@
     
                 <footer class="container" style="margin-top: 2em;">
                     <div class="row justify-content-end">
-                        <input class="btn btn-success" id="endButton" type="submit" value="Terminer" onclick="console.log(document.getElementById('decorMarche').value)">
+                        <input class="btn btn-success" id="endButton" type="submit" value="Terminer">
                     </div>
                 </footer>
             </form>
@@ -907,9 +1310,8 @@
                         var blocButtonLimonInterieur = document.getElementById('blocButtonLimonInterieur');
                         var parent = document.getElementById('LimonInterieur');
 
-
                         // Adding a tic to our lines's count
-                        totalLimonInterieur.value = parseInt(totalLimonInterieur.value) + 1;
+                        totalLimonInterieur.value = parseInt(totalLimonInterieur.value) + parseInt(1);
 
                         // RESULTAT ATTENDU
                         // <div class="input-group row" id="ligneLimonInterieur0">
@@ -1190,8 +1592,8 @@
 
                         var input2 = document.createElement('input');
                         input2.setAttribute("type", "text");
-                        input2.setAttribute("name", "PdlposeParquet" + totalPoseParquet.value);
-                        input2.setAttribute("id", "PdlposeParquet" + totalPoseParquet.value);
+                        input2.setAttribute("name", "PdlPoseParquet" + totalPoseParquet.value);
+                        input2.setAttribute("id", "PdlPoseParquet" + totalPoseParquet.value);
                         input2.setAttribute("class", "form-control col-4");
                         input2.setAttribute("placeholder", "PDL / PU");
 
@@ -1503,8 +1905,8 @@
                         var parent = document.getElementById('Mesures');
 
                         // Adding a tic to our lines's count
-                        totalMarche.value = parseInt(totalMarche.value) + 1;
-                        console.log(totalMarche.value)
+                        totalMarche.value = parseInt(totalMarche.value) + parseInt(1);
+                        // console.log(totalMarche.value + " | " + document.getElementById('totalMarche').value);
 
                         // RESULTAT ATTENDUS :
                         // <legend class="col-auto">N°1</legend>
@@ -1699,7 +2101,7 @@
                             // Création de la légende pour le fieldset du bloc de structuration bootstrap
                         var legend = document.createElement('legend');
                         legend.setAttribute("class", "col-auto");
-                        legend.innerHTML = "N°" + ( parseInt(totalMarche.value, 10) + parseInt(1, 10) );
+                        legend.innerHTML = "N°" + totalMarche.value.toString();
 
                             // Création du bloc de structuration bootstrap
                         var div5 = document.createElement('div');

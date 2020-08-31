@@ -1,6 +1,33 @@
 from django.db import models
 
 # Utile pour le récapitulatif dans ListeClient/{{Clients.id}}/détails/
+class Clients(models.Model):
+    # Identité client
+    Name = models.TextField(null=True)
+    Firstname = models.TextField(null=True)
+
+    # Contact client
+    Phone = models.TextField(null=True)
+    Smartphone = models.TextField()
+    # unique=True pas établit, car un client peut revenir pour une autre maison, donc devis à nouveau renseigné.
+    Email = models.EmailField(null=True)
+
+    # Adresse Physique client
+    Street_number = models.TextField(null=True)
+    Street = models.TextField(null=True)
+    Postal_code = models.TextField(null=True)
+    City = models.TextField(null=True)
+
+    # Adresse physique du chantier
+    Street_number_site = models.TextField(null=True)
+    Street_site = models.TextField(null=True)
+    Postal_code_site = models.TextField(null=True)
+    City_site = models.TextField(null=True)
+
+    # Cachet agence / Concessionnaire
+    Stamp = models.ImageField(null=True)
+    Date_created = models.DateField(auto_now=True)
+
 class Devis(models.Model):
     # Partie récapitulative du projet
         # Partie sur les marches
@@ -46,6 +73,8 @@ class Devis(models.Model):
     profile_limon_u65 = models.IntegerField(null=True)
     profile_limon_u75 = models.IntegerField(null=True)
     profile_limon_u85 = models.IntegerField(null=True)
+
+    hauteur_limon_verifier = models.BooleanField(null=True)
         # Parquets
     metrage_parquet = models.TextField(null=True)
     metrage_parquet_dalle = models.TextField(null=True)
@@ -68,28 +97,7 @@ class Devis(models.Model):
         # Commentaire utilisateur, des spécifitées lié à la pose etc ...
     commentaire = models.TextField(null=True)
 
-class Clients(models.Model):
-    # Identité client
-    Name = models.TextField(null=True)
-    Firstname = models.TextField(null=True)
-
-    # Contact client
-    Phone = models.TextField(null=True)
-    Smartphone = models.TextField()
-    # unique=True pas établit, car un client peut revenir pour une autre maison, donc devis à nouveau renseigné.
-    Email = models.EmailField(null=True)
-
-    # Adresse Physique client
-    Street_number = models.TextField(null=True)
-    Street = models.TextField(null=True)
-    Postal_code = models.TextField(null=True)
-    City = models.TextField(null=True)
-
-    # Cachet agence / Concessionnaire
-    Stamp = models.ImageField(null=True)
-    Date_created = models.DateField(auto_now=True)
-
-    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    client_id = models.ForeignKey(Clients, on_delete=models.CASCADE)
 
 class Photos(models.Model):
     # Photos prise chez les clients
@@ -106,12 +114,11 @@ class Mesure_Marches(models.Model):
     DepthL = models.TextField(null=True)
     DepthR = models.TextField(null=True)
 
-    # Options
-    RetourG = models.BooleanField(null=True, default=False)
-    RetourD = models.BooleanField(null=True, default=False)
-    PlintheG = models.BooleanField(null=True, default=False)
-    PlintheD = models.BooleanField(null=True, default=False)
-    ProfileArriere = models.BooleanField(null=True, default=False)
+    RetourG = models.TextField(null=True, default=False)
+    RetourD = models.TextField(null=True, default=False)
+    PlintheG = models.TextField(null=True, default=False)
+    PlintheD = models.TextField(null=True, default=False)
+    ProfileArriere = models.TextField(null=True, default=False)
 
     devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
@@ -124,7 +131,7 @@ class Marches_Ronde(models.Model):
 class Limons_Interieur(models.Model):
     length = models.TextField(null=True)
     pdl = models.TextField(null=True)
-    orientation = models.BooleanField(null=True) # 0 pour gauche, 1 pour droite
+    orientation = models.TextField(null=True)
     
     devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
@@ -183,10 +190,18 @@ class Panneaux_Palier(models.Model):
     devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
 
 
+
+
+
+
 # PARTIE FORMULAIRE DE PRISE DE MESURE
 # Décors pour certains produits
 class Decors_Marche(models.Model):
     name = models.TextField()
+
+# OPTIONNAL
+    # def __init__(self, name):
+    #     self.name = "Ardoise"
 
 class Decors_Contremarche(models.Model):
     name = models.TextField()
